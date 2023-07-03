@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config(); // load .env file
 import colors from 'colors';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import register from './routes/register.js';
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
@@ -9,6 +10,9 @@ import connectDB from './config/db.js';
 
 // create app
 const app = express();
+
+// allow cors
+app.use(cors());
 
 // connect to DB
 connectDB();
