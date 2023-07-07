@@ -16,10 +16,27 @@ export class AuthService {
         });
     })
   }
+
+  signOut(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this._api.post('/api/users/logout')
+      .then((res: any) => {
+        if (res && res.hasOwnProperty('message')) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      })
+    })
+  }
   
   authenticated(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      localStorage.getItem('userInfo') ? true : false ? resolve(true) : resolve(false);
+      if (localStorage.getItem('userInfo')) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
     })
   }
 

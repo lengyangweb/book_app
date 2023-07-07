@@ -22,10 +22,20 @@ export class LoginComponent {
   ) {}
 
   ngOnInit() {
+    
+    this._auth.authenticated()
+      .then((isLoggedIn: boolean) => {
+        if (isLoggedIn) {
+          this._router.navigate(['/home/welcome']);
+        }
+      })
+      .catch((error: Error) => console.error(error.message));
+
     this.loginForm = this._fb.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
+
   }
 
   onSubmit(): void {
@@ -42,15 +52,17 @@ export class LoginComponent {
 
         if (userInfo && userInfo.hasOwnProperty('_id') && userInfo._id) {
           this._auth.setCredential(userInfo);
-          this._router.navigate(['/welcome']);
+          this._router.navigate(['/home/welcome']);
         }
         
       })
-      .catch((error: Error) => {
+      .catch((err: any) => {
+        console.log(err?.message || err?.data?.message)
+
         return this._messageService.add({ 
           severity: 'error', 
           summary: 'Login Fail', 
-          detail: error.message 
+          detail: err.message 
         });
       })
   }

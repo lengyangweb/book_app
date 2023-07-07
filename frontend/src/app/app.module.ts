@@ -13,13 +13,17 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 // primeng
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { HeaderComponent } from './components/header/header.component';
+import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     WelcomeComponent,
-    SignUpComponent
+    SignUpComponent,
+    HeaderComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

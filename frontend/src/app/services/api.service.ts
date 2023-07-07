@@ -37,9 +37,12 @@ export class ApiService {
    * @param params parameters
    * @returns a promise
    */
-  post(url: string, params: any): Promise<any> {
+  post(url: string, params?: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this._http.post<any>(url, params).subscribe((res: any) => resolve(res));
+      this._http.post<any>(url, params)
+      .subscribe((res: any) => {
+        resolve(res)
+      });
     });
   }
 
