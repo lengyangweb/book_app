@@ -72,10 +72,20 @@ const logoutUser = asyncHandler(async (req, res) => {
 // route    /api/user/profile
 // @access  Private
 const getUserProfile = async(req, res) => {
+
+    const { email } = req.body;
+
+    const userExist = await User.findOne({ email });
+
+    if (!userExist) {
+        res.status(401);
+        throw new Error("User doesn't exist.");
+    }
+
     const user = {
-        _id: req.user._id,
-        name: req.user.name,
-        email: req.user.email
+        _id: userExist.user._id,
+        name: userExist.user.name,
+        email: userExist.user.email
     }
     
     res.status(200).json(user);

@@ -47,7 +47,7 @@ export class UserProfileComponent {
           summary: 'Update User',
           detail: 'User profile has been updated.'
         })
-      })
+      });
   }
 
 }
