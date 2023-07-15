@@ -6,6 +6,7 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
       {
         path: 'user-profile',
         component: UserProfileComponent
+      },
+      {
+        path: 'change-password',
+        component: ChangePasswordComponent
       }
     ]
   },

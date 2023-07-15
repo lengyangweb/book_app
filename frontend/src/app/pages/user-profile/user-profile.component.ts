@@ -27,7 +27,7 @@ export class UserProfileComponent {
 
     this.userForm = this._fb.group({
       name: [this.userInfo.name, [Validators.required]],
-      email: [this.userInfo.email, [Validators.required]]
+      email: [this.userInfo.email, [Validators.required]],
     });
 
   }

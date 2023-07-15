@@ -1,25 +1,30 @@
-<p-toast position="top-center"></p-toast>
+<p-toast position="top-center" [style]="{'marginTop': '2rem'}"></p-toast>
 <div class="container box">
-    <div class="col-12 col-sm-10 col-lg-4 card p-4 shadow">
-        <div class="row">
-            <h1>Login</h1>
-        </div>
-        <hr>
-        <form [formGroup]="loginForm" (submit)="onSubmit()">
-            <div class="form-group">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" name="email" id="email" class="form-control" formControlName="email">
-            </div>
-            <div class="form-group mt-2">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" name="password" id="password" class="form-control" formControlName="password">
-            </div>
-            <div class="d-flex flex-column align-items-center mt-4">
-                <button class="btn btn-primary">Sign In</button>
-                <div class="mt-2">
-                    <a href="/sign-up" class="href">Sign up?</a>
+    <div class="col-12 col-sm-10 col-lg-5">
+        <div class="card">
+            <h1 class="bg-dark text-light p-4">
+                <div class="d-flex align-items-center">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="border py-2 px-3" style="border-radius: 50px;">
+                            <i class="pi pi-lock" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                    <span class="px-3">Sign In</span>
                 </div>
-            </div>
-        </form>
+            </h1>
+            <form class="px-5 py-4" [formGroup]="loginForm" (submit)="onSubmit()">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" name="email" id="email" class="form-control" formControlName="email">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" name="password" id="password" class="form-control" formControlName="password">
+                </div>
+                <div class="d-flex flex-column align-items-center mt-4">
+                    <button class="btn btn-primary">Sign In</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

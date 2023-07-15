@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,7 @@ import { MessageService } from 'primeng/api';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './pages/home/home.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
     SignUpComponent,
     HeaderComponent,
     HomeComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,8 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
     HttpClientModule,
     BrowserAnimationsModule,
     ToastModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule
   ],
   providers: [
     MessageService

@@ -31,19 +31,18 @@ const getBook = asyncHandler(async (req, res) => {
     try {
 
         // request a book
-        const book = await Book.findOne({ _id: id });
+        const book = await Book.findById(id);
 
         if (!book) {
-            res.status(401);
-            throw new Error("No book found.");
+            return res.status(400).json({ message: "No book found." });
         }
 
-     res.status(200).json(book);
+        return res.status(200).json(book);
         
     } catch (error) {
         console.error(error);
 
-        return;
+        return res.status(500);
     }
 
 });
@@ -77,26 +76,20 @@ const addBook = asyncHandler(async (req, res) => {
 // @access  Private
 const updateBook = asyncHandler(async (req, res) => {
 
-    const { title } = req.body;
+    const { id } = req.params;
 
     try {
         
-        let book = await Book.findOne({  title });
+        // find book and update
+        const book = await Book.findByIdAndUpdate(id, req.body);
 
-        book = {
-            title: req.body.title,
-            description: req.body.description,
-            author: req.body.author
-        };
-
-        book.save();
-
-        return book;
+        // return updated book
+        return res.status(200).json({ book });
 
     } catch (error) {
         console.error(error);
 
-        return;
+        return res.status(500);
     }
 
 });
@@ -106,20 +99,14 @@ const updateBook = asyncHandler(async (req, res) => {
 // @access  Private
 const deleteBook = asyncHandler(async (req, res) => {
 
-    const { _id } = req.body._id;
+    const { id } = req.params;
 
     try {
-
-        const bookExist = await Book.findOne({ _id })
-
-        if (!bookExist) {
-            res.status(400);
-            throw new Error('Book not found.');
-        }
         
-        const result = await Book.findOneAndDelete({ _id });
+        // find book and delete
+        const result = await Book.findByIdAndDelete(id);
 
-        return result;
+        return res.status(200).json({ result });
         
     } catch (error) {
         res.status(400);
