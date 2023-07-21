@@ -18,6 +18,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './pages/home/home.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
+import { BookComponent } from './pages/book/book.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ChangePasswordComponent } from './pages/change-password/change-password
     HeaderComponent,
     HomeComponent,
     UserProfileComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    BookComponent
   ],
   imports: [
     BrowserModule,

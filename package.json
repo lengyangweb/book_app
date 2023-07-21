@@ -8,7 +8,9 @@
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
     "client": "npm run start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "client2": "npm run dev --prefix frontend2",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev2": "concurrently \"npm run server\" \"npm run client2\""
   },
   "author": "",
   "license": "ISC",
