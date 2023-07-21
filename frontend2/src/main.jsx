@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import store from './store';
 import { Provider } from 'react-redux';
+import PrivateRoute from './components/PrivateRoute.jsx';
 import {
   createBrowserRouter,
   Route,
@@ -19,8 +20,10 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index={ true } path="/" element={ <LoginScreen /> } />
-      <Route path='/home' element={<HomeScreen />} />
-      <Route path='/profile' element={ <ProfileScreen /> } />
+      <Route path='' element={<PrivateRoute />}>
+        <Route path='/home' element={<HomeScreen />}></Route>
+        <Route path='/profile' element={ <ProfileScreen /> } />
+      </Route>
     </Route>
   )
 )

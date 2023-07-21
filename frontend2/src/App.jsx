@@ -5,10 +5,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
-    <Container >
+    <>
       <ToastContainer />
       <Outlet />
-    </Container>
+    </>
   )
 }
 

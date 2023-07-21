@@ -1,9 +1,11 @@
-import React from 'react'
+import { Container } from 'react-bootstrap';
+import Header from '../components/Header';
+import { Outlet } from 'react-router-dom';
 
 function HomeScreen() {
   return (
     <>
-        <h3>Home Screen...</h3>
+      <h2>Home Page ...</h2>
     </>
   )
 }
