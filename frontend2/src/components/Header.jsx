@@ -37,11 +37,35 @@ const Header = () => {
                 </LinkContainer>
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav'>
+                    <Nav>
+                        <>
+                            <NavDropdown title='Additionals'>
+                                <LinkContainer to='/message-center'>
+                                    <NavDropdown.Item>Message Center</NavDropdown.Item>
+                                </LinkContainer>
+                                <LinkContainer to='/feedback'>
+                                    <NavDropdown.Item>Feedback</NavDropdown.Item>
+                                </LinkContainer>
+                            </NavDropdown>
+                        </>
+                    </Nav>
+                    <Nav>
+                        <>
+                            <NavDropdown title='Admin'>
+                                <LinkContainer to='/view'>
+                                    <NavDropdown.Item>Create/View User</NavDropdown.Item>
+                                </LinkContainer>
+                            </NavDropdown>
+                        </>
+                    </Nav>
                     <Nav className='ms-auto'>
                         <>
                             <NavDropdown title={ userInfo.name } id='username'>
                                 <LinkContainer to='/profile'>
                                     <NavDropdown.Item>Profile</NavDropdown.Item>
+                                </LinkContainer>
+                                <LinkContainer to='/change-password'>
+                                    <NavDropdown.Item>Change Password</NavDropdown.Item>
                                 </LinkContainer>
                                 <NavDropdown.Item onClick={logoutUser}>
                                     <div className="d-flex align-items-center">

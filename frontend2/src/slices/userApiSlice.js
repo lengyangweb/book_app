@@ -24,6 +24,27 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: data
             })
+        }),
+        updatePassword: builder.mutation({
+            query: (data) => ({
+                url: `${USERS_URL}/profile`,
+                method: 'PUT',
+                body: data
+            })
+        }),
+        register: builder.mutation({
+            query: (data) => ({
+                url: `${USERS_URL}`,
+                method: 'POST',
+                body: data
+            })
+        }),
+        getUsers: builder.query({
+            query: (data) => ({
+                url: `https://jsonplaceholder.typicode.com/users`,
+                method: 'GET',
+                body: data
+            })
         })
      })
 });
@@ -31,5 +52,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
 export const { 
     useLoginMutation, 
     useSignOutMutation,
-    useUpdateUserMutation
+    useUpdateUserMutation,
+    useUpdatePasswordMutation,
+    useRegisterMutation,
+    useGetUsersQuery
 } = userApiSlice;

@@ -40,7 +40,7 @@ function ProfileScreen() {
   return (
     <Container style={{ width: '100vw', height: '90vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       {/* <div className="d-flex justify-content-center mt-4"> */}
-        <Col sm lg={4}>
+        <Col sm lg={5}>
           <Card>
             <h1 className='bg-dark p-3 text-light'>
               <div className="d-flex align-item-center">
@@ -50,7 +50,7 @@ function ProfileScreen() {
                 <span className='mx-2 mt-2'>User Profile</span>
               </div>
             </h1>
-            <form className='px-3 py-2' onSubmit={ submitHandler }>
+            <form className='px-4 py-2' onSubmit={ submitHandler }>
               <Form.Group controlId='formBasicName'>
                 <Form.Label>Name:</Form.Label>
                 <Form.Control 

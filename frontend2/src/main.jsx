@@ -15,6 +15,8 @@ import {
 import LoginScreen from './screens/LoginScreen.jsx';
 import HomeScreen from './screens/HomeScreen.jsx';
 import ProfileScreen from './screens/ProfileScreen.jsx';
+import ChangePasswordScreen from './screens/ChangePasswordScreen.jsx';
+import AdminScreen from './screens/AdminScreen.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +25,8 @@ const router = createBrowserRouter(
       <Route path='' element={<PrivateRoute />}>
         <Route path='/home' element={<HomeScreen />}></Route>
         <Route path='/profile' element={ <ProfileScreen /> } />
+        <Route path='/change-password' element={ <ChangePasswordScreen /> } />
+        <Route path='/view' element={ <AdminScreen /> } />
       </Route>
     </Route>
   )

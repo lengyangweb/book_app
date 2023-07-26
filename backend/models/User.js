@@ -16,6 +16,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         require: true,
         required: true
+    },
+    group: {
+        type: Array
     }
 },
 {

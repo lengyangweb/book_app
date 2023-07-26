@@ -22,7 +22,7 @@ const registerUser = asyncHandler(async(req, res) => {
     });
 
     if (user) {
-        generateToken(res, user._id);
+        // generateToken(res, user._id);
         res.status(201).json({
             _id: user._id,
             name: user.name,
@@ -118,10 +118,37 @@ const updateUserProfile = async(req, res) => {
     }
 }
 
+const addGroup = asyncHandler(async (req, res) => {
+    
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+
+    if (!user) {
+        res.status(401);
+        throw new Error('User not found.');
+    }
+
+    const result = await User.findOneAndUpdate(id, { 
+        $push: {
+            group: req.body.group
+        }
+    });
+
+    if (!result) {
+        res.status(400);
+        throw new Error('Unable to add group.');
+    }
+
+    res.status(200).json({ message: 'Group has been added.' });
+
+})
+
 export {
     registerUser,
     authUser,
     updateUserProfile,
     getUserProfile,
-    logoutUser
+    logoutUser,
+    addGroup
 }
