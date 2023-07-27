@@ -1,4 +1,3 @@
-import React from 'react'
 
 const GridRow = ({ headers, item }) => {
   const headerFields = headers.map((header) => header.value);
@@ -12,7 +11,7 @@ const GridRow = ({ headers, item }) => {
         { headerFields.map((field) => (
             <th 
                 key={ item[field] }
-                onClick={ onSelect(item) }
+                onClick={ () => onSelect(item) }
             >{ item[field] }</th>
         ))  }
     </tr>

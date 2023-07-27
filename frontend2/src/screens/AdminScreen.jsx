@@ -1,11 +1,10 @@
 import { useState, useEffect} from 'react';
-import { Container, Card, Col, Row, Form } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import RegisterForm from '../components/RegisterForm';
 import GridBox from '../components/shared/Grid/GridBox';
-import { useGetUsersQuery } from '../slices/userApiSlice';
 
 const AdminScreen = () => {
-    const [users, setUsers] = useState([]);
+    const [items, setItem] = useState([]);
     const tableHeaders = [
         { label: 'ID', value: 'id' },
         { label: 'Username', value: 'username' },
@@ -24,7 +23,7 @@ const AdminScreen = () => {
             });
 
             const data = await res.json();
-            setUsers(data);
+            setItem(data);
         }
 
         getUsers();
@@ -32,10 +31,16 @@ const AdminScreen = () => {
 
   return (
     <div className='p-4'>
-        <Row>
-            <Col sm md={12} lg={12}>
-                {/* <h1>User</h1>
-                <hr /> */}
+        <Col lg={12} className='py-4'>
+            <GridBox 
+                headers={ tableHeaders } 
+                items={ items } 
+                setItem={ setItem }
+            />
+        </Col>
+        
+        {/* <Row>
+            <Col md={12} lg={12}>
                 <Row>
                     <Col md={12} lg={4} className='py-2'>
                         <RegisterForm />
@@ -43,13 +48,14 @@ const AdminScreen = () => {
                     <Col md={12} lg={8} className='py-2'>
                         <GridBox 
                             headers={ tableHeaders } 
-                            items={ users } 
+                            items={ items } 
+                            setItem={ setItem }
                         />
                     </Col>
                 </Row>
             </Col>
             <Col md={12} lg={12}></Col>
-        </Row>
+        </Row> */}
     </div>
   )
 }
