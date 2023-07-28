@@ -7,7 +7,8 @@ import GridFooter from './GridFooter';
 const GridBox = ({ 
     headers, 
     items,
-    setItem
+    setItem,
+    initialItems
 }) => {
   const [sortStatus, setSortStatus] = useState('');
 
@@ -43,19 +44,39 @@ const GridBox = ({
     setItem([ ...sortedItem ]);
   }
 
+  const onFilter = (field, value) => {
+
+    if (!value) {
+        return setItem(initialItems);
+    }
+
+    const filterItems = items.filter((item) => {
+        if (typeof value === 'string') {
+            return String(item[field]).toLowerCase().startsWith((String(value).toLowerCase()));
+        }
+
+        if (typeof value === 'number') {
+            return item[field] === value;
+        }
+    });
+
+    setItem(filterItems);
+  }
+
   return (
     <div className="table-responsive">
-        <Table striped bordered hover border>
-            <thead style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
+        <Table striped hover className='border bg-dark'>
+            <thead style={{ display: 'table', width: 'calc(100% - 1em)', tableLayout: 'fixed' }}>
                 <GridHeader 
                     headers={ headers } 
                     sortAsc = { sortAsc }
                     sortDesc = { sortDesc }
                     sortStatus = { sortStatus }
                     setSortStatus = { setSortStatus }
+                    setFilter={ onFilter }
                 />
             </thead>
-            <tbody style={{ display: 'block', maxHeight: '350px', overflowY: 'auto' }}>
+            <tbody style={{ maxHeight: '350px', overflow: 'auto', display: 'block', width: '100%', tableLayout: 'fixed' }}>
                 {
                     items.map((item) => (
                         <GridRow 
@@ -72,12 +93,6 @@ const GridBox = ({
         </Table>
     </div>
   )
-}
-
-const gridStyle = {
-    // width: '100%',
-    // maxHeight: '350px',
-    // overflow: 'auto',
 }
 
 export default GridBox

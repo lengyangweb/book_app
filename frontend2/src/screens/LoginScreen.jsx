@@ -38,7 +38,7 @@ function LoginScreen() {
   return (
     <>
       <div className="container" style={{ 'width': '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className="col-12 col-lg-5">
+          <div className="col-12 col-lg-4">
           <div className="card">
             <h1 className='p-4 bg-dark text-light'>
               <div className="d-flex align-items-center">

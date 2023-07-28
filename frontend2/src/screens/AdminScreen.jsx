@@ -4,7 +4,9 @@ import RegisterForm from '../components/RegisterForm';
 import GridBox from '../components/shared/Grid/GridBox';
 
 const AdminScreen = () => {
-    const [items, setItem] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [initialUsers, setInitialUsers] = useState([]);
+
     const tableHeaders = [
         { label: 'ID', value: 'id' },
         { label: 'Username', value: 'username' },
@@ -23,7 +25,8 @@ const AdminScreen = () => {
             });
 
             const data = await res.json();
-            setItem(data);
+            setUsers([ ...data ]);
+            setInitialUsers([ ...data ]);
         }
 
         getUsers();
@@ -34,8 +37,9 @@ const AdminScreen = () => {
         <Col lg={12} className='py-4'>
             <GridBox 
                 headers={ tableHeaders } 
-                items={ items } 
-                setItem={ setItem }
+                items={ users } 
+                initialItems = { initialUsers }
+                setItem={ setUsers }
             />
         </Col>
         

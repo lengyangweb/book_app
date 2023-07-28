@@ -12,6 +12,7 @@ const GridRow = ({ headers, item }) => {
             <th 
                 key={ item[field] }
                 onClick={ () => onSelect(item) }
+                style={{ borderRight: '2px solid #ddd' }}
             >{ item[field] }</th>
         ))  }
     </tr>
