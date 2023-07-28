@@ -7,7 +7,7 @@ const GridRow = ({ headers, item }) => {
   }
 
   return (
-    <tr style={{ cursor: 'pointer' }}>
+    <tr style={{ display: 'table', width: '100%', tableLayout: 'fixed', cursor: 'pointer' }}>
         { headerFields.map((field) => (
             <th 
                 key={ item[field] }

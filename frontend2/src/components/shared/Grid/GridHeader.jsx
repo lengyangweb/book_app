@@ -3,23 +3,18 @@ import { FaSort } from 'react-icons/fa';
 const GridHeader = ({ 
   headers,
   sortAsc,
-  sortDesc
+  sortDesc,
+  sortStatus,
+  setSortStatus
 }) => {
-  let sortStatus = "";
-  let currentSort = "";
   
   const onSort = (value) => {
-    if (!sortStatus || currentSort !== 'asc') {
-      sortStatus = 'asc';
-      sortAsc(value)
+    if (!sortStatus || (sortStatus && sortStatus === 'desc')) {
+      setSortStatus('asc');
+      sortAsc(value);
     } else {
-      if (sortStatus === 'asc') {
-        sortStatus = 'desc';
-        sortDesc(value);
-      } else {
-        sortStatus = 'asc'
-        sortAsc(value);
-      }
+      setSortStatus('desc');
+      sortDesc(value);
     }
   }
 
