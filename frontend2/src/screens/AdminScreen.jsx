@@ -4,7 +4,8 @@ import { Col, Row } from 'react-bootstrap';
 import RegisterForm from '../components/RegisterForm';
 import GridBox from '../components/shared/Grid/GridBox';
 import { toast } from 'react-toastify';
-import { FaTrashAlt } from 'react-icons/fa'
+import { FaTrashAlt, FaTools, FaUserPlus } from 'react-icons/fa'
+import CreateUserModal from '../components/CreateUserModal';
 
 const AdminScreen = () => {
     const userData = useLoaderData();
@@ -13,6 +14,8 @@ const AdminScreen = () => {
     const [initialUsers, setInitialUsers] = useState(userData);
     const [selectedUser, setSelectedUser] = useState({});
     const [formSubmit, setFormSubmit] = useState(false);
+    const [show, setShow] = useState(false);
+    const [newUser, setNewUser] = useState({});
 
     const tableHeaders = [
         { label: 'ID', value: 'id' },
@@ -45,6 +48,21 @@ const AdminScreen = () => {
         }
     }
 
+    const handleClose = () => {
+        setShow(false)
+    };
+
+    const handleShow = (user) => {
+        console.log(user);
+
+        setShow(true)
+    };
+
+    const onShowUpdate = () => {
+        console.log(selectedUser);
+        setShow();
+    }
+
   if (!users) {
     return (
         <div className="d-flex justify-content-centers">
@@ -57,15 +75,31 @@ const AdminScreen = () => {
     <div className='p-4'>
         <Row>
             <Col>
-                <div className="d-flex justify-content-end">
+                <div className="d-flex justify-content-end align-items-center">
+                    <button className="btn btn-success" onClick={ () => setShow(true) }>
+                        <div className="d-flex flex-column align-items-center justify-content-center px-3">
+                            <FaUserPlus />
+                            <small>Create</small>
+                        </div>
+                    </button>
+                    <button 
+                        className="btn btn-warning mx-2"
+                        disabled={ !Object.keys(selectedUser).length }
+                        onClick={ onShowUpdate }
+                    >
+                        <div className="d-flex flex-column align-items-center justify-content-center px-3">
+                            <FaTools />
+                            <small>Update</small>
+                        </div>
+                    </button>
                     <button 
                         className="btn btn-danger" 
                         disabled={ !Object.keys(selectedUser).length }
                         onClick={ deleteUser }
                     >
-                        <div className="d-flex flex-column align-items-center justify-content-center">
-                            <span>Delete</span>
+                        <div className="d-flex flex-column align-items-center justify-content-center px-3 mx-1">
                             <FaTrashAlt />
+                            <small>Delete</small>
                         </div>
                     </button>
                 </div>
@@ -80,31 +114,17 @@ const AdminScreen = () => {
                     formSubmit={ formSubmit }
                 />
             </Col>
-        </Row>
-        
-        {/* <Row>
-            <Col md={12} lg={12}>
-                <Row>
-                    <Col md={12} lg={4} className='py-2'>
-                        <RegisterForm />
-                    </Col>
-                    <Col md={12} lg={8} className='py-2'>
-                        <GridBox 
-                            headers={ tableHeaders } 
-                            items={ items } 
-                            setItem={ setItem }
-                        />
-                    </Col>
-                </Row>
+            <Col lg={12}>
+                <CreateUserModal 
+                    show={ show }
+                    handleShow={ handleShow }
+                    handleClose={ handleClose }
+                />
             </Col>
-            <Col md={12} lg={12}></Col>
-        </Row> */}
+        </Row>
     </div>
   )
 }
 
-const deleteUser = async (id) => {
-    
-}
 
 export default AdminScreen
