@@ -18,13 +18,15 @@ const GridHeader = ({
         
         <div className="d-flex justify-content-start align-items-center">
           <span className='mx-2'>{ label }</span>
-          { sortIcons }
+          {/* { sortIcons } */}
+          <FaSort onClick={ () => onSort(value) } style={{ cursor: 'pointer' }} />
         </div>
 
         <form>
           <Form.Group>
             <Form.Control
               type='text'
+              style={{ width: '150px' }}
               placeholder={ value }
               onChange={ (e) => setFilter(value, e.target.value) }
             />

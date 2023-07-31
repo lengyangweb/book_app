@@ -8,9 +8,13 @@ const GridBox = ({
     headers, 
     items,
     setItem,
-    initialItems
+    initialItems,
+    selectType,
+    setSelectedItem
 }) => {
   const [sortStatus, setSortStatus] = useState('');
+  const [singleSelection, setSingleSelection] = useState({});
+  const [multiSelection, setMultiSelection] = useState([]);
 
   const sortAsc = (field) => {
     const sortedItem = items.sort((a, b) => {
@@ -63,6 +67,26 @@ const GridBox = ({
     setItem(filterItems);
   }
 
+  const onSingleSelection = (item) => {
+    const key = Object.keys(item)[0];
+    if (Object.keys(singleSelection).length && item[key] == singleSelection[key]) {
+        setSingleSelection({});
+        setSelectedItem({});
+    } else {
+        setSingleSelection({ ...item });
+        setSelectedItem({ ...item });
+    }
+  }
+
+  const onMultiSelection = (item) => {
+    const key = Object.keys(item)[0];
+    if (multiSelection.some((selected) => selected[key] === item[key])) {
+        setMultiSelection([ ...multiSelection.filter((selected) => selected[key] !== item[key]) ]);
+    } else {
+        setMultiSelection([ ...multiSelection, item ]);
+    }
+  }
+
   return (
     <div className="table-responsive">
         <Table striped hover className='border bg-dark'>
@@ -73,7 +97,7 @@ const GridBox = ({
                     sortDesc = { sortDesc }
                     sortStatus = { sortStatus }
                     setSortStatus = { setSortStatus }
-                    setFilter={ onFilter }
+                    setFilter= { onFilter }
                 />
             </thead>
             <tbody style={{ maxHeight: '350px', overflow: 'auto', display: 'block', width: '100%', tableLayout: 'fixed' }}>
@@ -83,6 +107,11 @@ const GridBox = ({
                             key={item.name} 
                             headers={ headers } 
                             item={ item } 
+                            selectType={ selectType }
+                            singleSelection={ singleSelection }
+                            multiSelection={ multiSelection }
+                            onSingleSelection={ onSingleSelection }
+                            onMultiSelection={ onMultiSelection }
                         />
                     ))
                 }
