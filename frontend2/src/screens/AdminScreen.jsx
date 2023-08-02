@@ -48,12 +48,33 @@ const AdminScreen = () => {
         }
     }
 
+    const createUser = async () => {
+        const res = await fetch('https://jsonplaceholder.typicode.com/users', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: newUser
+        });
+
+        if (!res) throw new Error('Fail to create user.');
+
+        const data = await res.json();
+
+        setUsers([ ...users, { id: data, ...newUser } ]);
+        setInitialUsers([ ...users, { id: data, ...newUser } ]);
+        newUser({});
+    }
+
     const handleClose = () => {
         setShow(false)
     };
 
-    const handleShow = (user) => {
-        console.log(user);
+    const handleShow = async (user) => {
+        setNewUser(user);
+
+        const result = await createUser();
 
         setShow(true)
     };
