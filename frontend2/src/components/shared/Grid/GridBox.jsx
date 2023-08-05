@@ -104,7 +104,7 @@ const GridBox = ({
                 {
                     items.map((item) => (
                         <GridRow 
-                            key={item.name} 
+                            key={item.id} 
                             headers={ headers } 
                             item={ item } 
                             selectType={ selectType }

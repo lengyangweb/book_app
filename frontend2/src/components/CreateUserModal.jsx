@@ -8,14 +8,15 @@ import { FaUserPlus } from 'react-icons/fa';
 function CreateUserModal({ 
   show, 
   handleShow, 
-  handleClose
+  handleClose,
+  selectedUser
 }) {
 
   const [errMsg, setErrMsg] = useState('');
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState(Object.keys(selectedUser).length ? selectedUser?.name : '');
+  const [username, setUsername] = useState(Object.keys(selectedUser).length ? selectedUser.username : '');
+  const [email, setEmail] = useState(Object.keys(selectedUser).length ? selectedUser.email : '');
+  const [password, setPassword] = useState(Object.keys(selectedUser).length ? selectedUser?.password : '');
   const [passErrMsg, setPassErrMsg] = useState('');
 
   const handleSubmit = () => {
@@ -55,14 +56,14 @@ function CreateUserModal({
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="d-flex align-items-center">
-              <span>Create User</span>
+              <span>{ Object.keys(selectedUser).length ? 'Update' : 'Create' } User</span>
               <FaUserPlus className='mx-2' />
             </div>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          { errMsg && (<strong className='text-danger'>{ errMsg }</strong>) }
-          <form className='py-3'>
+          { errMsg && (<strong className='text-danger'><small>{ errMsg }</small></strong>) }
+          <form className='py-3 px-2'>
             <Form.Group>
               <Form.Label>Name:</Form.Label>
               <Form.Control 

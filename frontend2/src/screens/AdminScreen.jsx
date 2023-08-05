@@ -13,9 +13,9 @@ const AdminScreen = () => {
     const [users, setUsers] = useState(userData);
     const [initialUsers, setInitialUsers] = useState(userData);
     const [selectedUser, setSelectedUser] = useState({});
-    const [formSubmit, setFormSubmit] = useState(false);
     const [show, setShow] = useState(false);
     const [newUser, setNewUser] = useState({});
+    const [formSubmit, setFormSubmit] = useState(false);
 
     const tableHeaders = [
         { label: 'ID', value: 'id' },
@@ -25,7 +25,6 @@ const AdminScreen = () => {
     ];
 
     const deleteUser = async () => {
-        console.log(selectedUser);
         const res = await fetch(`https://jsonplaceholder.typicode.com/users/${selectedUser.id}`, {
             method: 'DELETE',
             headers: {
@@ -48,40 +47,43 @@ const AdminScreen = () => {
         }
     }
 
-    const createUser = async () => {
+    const createUser = async (user) => {
         const res = await fetch('https://jsonplaceholder.typicode.com/users', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: newUser
+            body: JSON.stringify(user)
         });
 
         if (!res) throw new Error('Fail to create user.');
 
         const data = await res.json();
 
-        setUsers([ ...users, { id: data, ...newUser } ]);
-        setInitialUsers([ ...users, { id: data, ...newUser } ]);
-        newUser({});
-    }
+        // if user is updated and have an id
+        if (data && data.hasOwnProperty('id')) {
 
+            // set new update users
+            const updatedUsers = [ ...users, { id: users.length + 1, ...user } ];
+
+            // update users info
+            setUsers(updatedUsers);
+            setInitialUsers(updatedUsers);
+        }
+    }
+    
     const handleClose = () => {
         setShow(false)
     };
-
+    
     const handleShow = async (user) => {
-        setNewUser(user);
-
-        const result = await createUser();
-
-        setShow(true)
+        await createUser(user); // send new user to populate in database
+        setShow(false);
     };
 
     const onShowUpdate = () => {
-        console.log(selectedUser);
-        setShow();
+        setShow(true);
     }
 
   if (!users) {
@@ -140,6 +142,7 @@ const AdminScreen = () => {
                     show={ show }
                     handleShow={ handleShow }
                     handleClose={ handleClose }
+                    selectedUser={ selectedUser }
                 />
             </Col>
         </Row>
