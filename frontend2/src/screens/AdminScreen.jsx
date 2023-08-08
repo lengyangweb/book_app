@@ -1,7 +1,6 @@
-import { useState, useEffect} from 'react';
+import { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
-import RegisterForm from '../components/RegisterForm';
 import GridBox from '../components/shared/Grid/GridBox';
 import { toast } from 'react-toastify';
 import { FaTrashAlt, FaTools, FaUserPlus } from 'react-icons/fa'
@@ -14,7 +13,6 @@ const AdminScreen = () => {
     const [initialUsers, setInitialUsers] = useState(userData);
     const [selectedUser, setSelectedUser] = useState({});
     const [show, setShow] = useState(false);
-    const [newUser, setNewUser] = useState({});
     const [formSubmit, setFormSubmit] = useState(false);
 
     const tableHeaders = [
@@ -41,6 +39,7 @@ const AdminScreen = () => {
             const newUsers = users.filter((user) => user.id !== selectedUser.id);
             setUsers([ ...newUsers ]);
             setInitialUsers([ ...newUsers ]);
+            toast.success(`User ${selectedUser['name']} has been removed.`);
             setSelectedUser({});
         } else {
             toast.error('Unable to remove user.');
@@ -70,6 +69,7 @@ const AdminScreen = () => {
             // update users info
             setUsers(updatedUsers);
             setInitialUsers(updatedUsers);
+            toast.success('User has been created.');
         }
     }
     

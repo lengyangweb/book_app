@@ -13,10 +13,10 @@ function CreateUserModal({
 }) {
 
   const [errMsg, setErrMsg] = useState('');
-  const [name, setName] = useState(Object.keys(selectedUser).length ? selectedUser?.name : '');
-  const [username, setUsername] = useState(Object.keys(selectedUser).length ? selectedUser.username : '');
-  const [email, setEmail] = useState(Object.keys(selectedUser).length ? selectedUser.email : '');
-  const [password, setPassword] = useState(Object.keys(selectedUser).length ? selectedUser?.password : '');
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [passErrMsg, setPassErrMsg] = useState('');
 
   const handleSubmit = () => {
