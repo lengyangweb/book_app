@@ -19,6 +19,8 @@ function CreateUserModal({
   const [password, setPassword] = useState('');
   const [passErrMsg, setPassErrMsg] = useState('');
 
+  const isUpdateUser = Object.keys(selectedUser).length ? true : false;
+
   const handleSubmit = () => {
     if (errMsg) setErrMsg('');
 
@@ -56,7 +58,7 @@ function CreateUserModal({
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="d-flex align-items-center">
-              <span>{ Object.keys(selectedUser).length ? 'Update' : 'Create' } User</span>
+              <span>{ isUpdateUser ? 'Update' : 'Create' } User</span>
               <FaUserPlus className='mx-2' />
             </div>
           </Modal.Title>
@@ -88,7 +90,8 @@ function CreateUserModal({
                 onChange={ (e) => setEmail(e.target.value) }
               />
             </Form.Group>
-            <Form.Group className='mt-3'>
+            { !isUpdateUser && 
+              <Form.Group className='mt-3'>
               <Form.Label>Password:</Form.Label>
               <Form.Control 
                 type='password'
@@ -96,6 +99,7 @@ function CreateUserModal({
                 onChange={ (e) => setPassword(e.target.value) }
               />
             </Form.Group>
+            }
             { passErrMsg && (<small className='text-danger'>{ passErrMsg }</small>)}
           </form>
         </Modal.Body>
@@ -103,8 +107,8 @@ function CreateUserModal({
           <Button variant="secondary" onClick={onClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            { Object.keys(selectedUser).length ? 'Update' : 'Create' } User
+          <Button variant="primary" onClick={  handleSubmit}>
+            { isUpdateUser ? 'Update' : 'Create' } User
           </Button>
         </Modal.Footer>
       </Modal>

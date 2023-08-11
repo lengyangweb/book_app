@@ -89,6 +89,28 @@ const AdminScreen = () => {
             });
         }
     }
+
+    const updateUser = async (user) => {
+        const res = await fetch(`https://jsonplaceholder.typicode.com/users/${user.id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        });
+
+        if (!res) throw new Error('Fail to update user.');
+
+        const data = await res.json();
+
+        if (data && data.hasOwnProperty('id')) {
+
+            // set new update users 
+            const updateUsers = [];
+
+        }
+    }
     
     const handleClose = () => {
         setShow(false);
