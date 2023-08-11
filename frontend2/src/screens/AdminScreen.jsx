@@ -14,6 +14,9 @@ const AdminScreen = () => {
     const [selectedUser, setSelectedUser] = useState({});
     const [show, setShow] = useState(false);
     const [formSubmit, setFormSubmit] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
+    const [updateLoading, setUpdateLoading] = useState(false);
+    const [userCount, setUserCount] = useState(userData.length || 0);
 
     const tableHeaders = [
         { label: 'ID', value: 'id' },
@@ -23,6 +26,8 @@ const AdminScreen = () => {
     ];
 
     const deleteUser = async () => {
+        setDeleteLoading(true);
+
         const res = await fetch(`https://jsonplaceholder.typicode.com/users/${selectedUser.id}`, {
             method: 'DELETE',
             headers: {
@@ -36,14 +41,23 @@ const AdminScreen = () => {
         const data = await res.json();
 
         if (!Object.keys(data).length) {
+            setDeleteLoading(false); // set deleting flag
+
+            // update users
             const newUsers = users.filter((user) => user.id !== selectedUser.id);
             setUsers([ ...newUsers ]);
             setInitialUsers([ ...newUsers ]);
-            toast.success(`User ${selectedUser['name']} has been removed.`);
+
+            // show success dialog
+            toast.success(`User ${selectedUser['name']} has been removed.`, {
+                position: toast.POSITION.TOP_CENTER
+            });
+
             setSelectedUser({});
         } else {
             toast.error('Unable to remove user.');
         }
+        
     }
 
     const createUser = async (user) => {
@@ -64,26 +78,30 @@ const AdminScreen = () => {
         if (data && data.hasOwnProperty('id')) {
 
             // set new update users
-            const updatedUsers = [ ...users, { id: users.length + 1, ...user } ];
+            const updatedUsers = [ ...users, { id: userCount + 1, ...user } ];
+            setUserCount(userCount + 1);
 
             // update users info
             setUsers(updatedUsers);
             setInitialUsers(updatedUsers);
-            toast.success('User has been created.');
+            toast.success('User has been created.', {
+                position: toast.POSITION.TOP_CENTER
+            });
         }
     }
     
     const handleClose = () => {
-        setShow(false)
+        setShow(false);
     };
     
     const handleShow = async (user) => {
+        setFormSubmit(true);
         await createUser(user); // send new user to populate in database
-        setShow(false);
+        setShow(false); // close modal after user is created
     };
 
     const onShowUpdate = () => {
-        setShow(true);
+        setShow(true); // open user modal
     }
 
   if (!users) {
@@ -99,14 +117,14 @@ const AdminScreen = () => {
         <Row>
             <Col>
                 <div className="d-flex justify-content-end align-items-center">
-                    <button className="btn btn-success" onClick={ () => setShow(true) }>
+                    <button className="btn btn-sm btn-success" onClick={ () => setShow(true) } disabled={ Object.keys(selectedUser).length }>
                         <div className="d-flex flex-column align-items-center justify-content-center px-3">
                             <FaUserPlus />
                             <small>Create</small>
                         </div>
                     </button>
                     <button 
-                        className="btn btn-warning mx-2"
+                        className="btn btn-sm btn-warning mx-2"
                         disabled={ !Object.keys(selectedUser).length }
                         onClick={ onShowUpdate }
                     >
@@ -116,15 +134,26 @@ const AdminScreen = () => {
                         </div>
                     </button>
                     <button 
-                        className="btn btn-danger" 
+                        className="btn btn-sm btn-danger" 
                         disabled={ !Object.keys(selectedUser).length }
                         onClick={ deleteUser }
                     >
                         <div className="d-flex flex-column align-items-center justify-content-center px-3 mx-1">
-                            <FaTrashAlt />
-                            <small>Delete</small>
+                            {
+                                !deleteLoading ? 
+                                <>
+                                    <FaTrashAlt />
+                                    <small>Delete</small>
+                                </>
+                                :
+                                <>
+                                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                    <span className="role">Deleting</span>
+                                </>
+                            }
                         </div>
                     </button>
+                    
                 </div>
             </Col>
             <Col lg={12} className='py-4'>

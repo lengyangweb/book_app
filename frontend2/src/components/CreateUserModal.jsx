@@ -68,7 +68,7 @@ function CreateUserModal({
               <Form.Label>Name:</Form.Label>
               <Form.Control 
                 type='text'
-                value={ name }
+                value={ selectedUser.name || name }
                 onChange={ (e) => setName(e.target.value) }
               />
             </Form.Group>
@@ -76,7 +76,7 @@ function CreateUserModal({
               <Form.Label>Username:</Form.Label>
               <Form.Control 
                type='text'
-                value={ username }
+                value={ selectedUser.username || username }
                 onChange={ (e) => setUsername(e.target.value) }
               />
             </Form.Group>
@@ -84,12 +84,12 @@ function CreateUserModal({
               <Form.Label>Email:</Form.Label>
               <Form.Control 
                 type='email'
-                value={ email }
+                value={ selectedUser.email || email }
                 onChange={ (e) => setEmail(e.target.value) }
               />
             </Form.Group>
             <Form.Group className='mt-3'>
-              <Form.Label>Passowrd:</Form.Label>
+              <Form.Label>Password:</Form.Label>
               <Form.Control 
                 type='password'
                 value={ password }
@@ -104,7 +104,7 @@ function CreateUserModal({
             Close
           </Button>
           <Button variant="primary" onClick={handleSubmit}>
-            Create User
+            { Object.keys(selectedUser).length ? 'Update' : 'Create' } User
           </Button>
         </Modal.Footer>
       </Modal>
