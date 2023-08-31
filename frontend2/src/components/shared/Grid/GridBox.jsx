@@ -3,6 +3,7 @@ import Table from 'react-bootstrap/Table';
 import GridHeader from './GridHeader';
 import GridRow from './GridRow';
 import GridFooter from './GridFooter';
+import PropTypes from 'prop-types';
 
 const GridBox = ({ 
     headers, 
@@ -90,7 +91,7 @@ const GridBox = ({
   return (
     <div className="table-responsive">
         <Table striped hover className='border bg-dark'>
-            <thead style={{ display: 'table', width: 'calc(100% - 1em)', tableLayout: 'fixed' }}>
+            <thead style={ theadStyle }>
                 <GridHeader 
                     headers={ headers } 
                     sortAsc = { sortAsc }
@@ -100,11 +101,11 @@ const GridBox = ({
                     setFilter= { onFilter }
                 />
             </thead>
-            <tbody style={{ maxHeight: '350px', overflow: 'auto', display: 'block', width: '100%', tableLayout: 'fixed' }}>
+            <tbody style={ tbodyStyle }>
                 {
-                    items.map((item) => (
+                    items.map((item, index) => (
                         <GridRow 
-                            key={item.id} 
+                            key={ index } 
                             headers={ headers } 
                             item={ item } 
                             selectType={ selectType }
@@ -122,6 +123,29 @@ const GridBox = ({
         </Table>
     </div>
   )
+}
+
+const theadStyle = { 
+    display: 'table', 
+    width: 'calc(100% - 1em)', 
+    tableLayout: 'fixed' 
+};
+
+const tbodyStyle = { 
+    maxHeight: '350px', 
+    overflow: 'auto', 
+    display: 'block', 
+    width: '100%', 
+    tableLayout: 'fixed'
+};
+
+GridBox.propTypes = {
+    headers: PropTypes.array, 
+    items: PropTypes.array,
+    setItem: PropTypes.func,
+    initialItems: PropTypes.array,
+    selectType: PropTypes.object,
+    setSelectedItem: PropTypes.func
 }
 
 export default GridBox

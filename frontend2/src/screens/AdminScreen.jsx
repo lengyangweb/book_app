@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import GridBox from '../components/shared/Grid/GridBox';
@@ -6,45 +6,65 @@ import { toast } from 'react-toastify';
 import { FaTrashAlt, FaTools, FaUserPlus } from 'react-icons/fa'
 import CreateUserModal from '../components/CreateUserModal';
 
-const AdminScreen = () => {
-    const userData = useLoaderData();
+import { 
+    useUpdateUserInfoMutation,
+    useUpdatePasswordMutation,
+    useRegisterMutation,
+    useGetUsersQuery,
+    useDeleteUserMutation
 
-    const [users, setUsers] = useState(userData);
-    const [initialUsers, setInitialUsers] = useState(userData);
+} from '../slices/userApiSlice';
+
+const AdminScreen = () => {
+    // const userData = useLoaderData();
+
+    const [users, setUsers] = useState([]);
+    const [initialUsers, setInitialUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState({});
     const [show, setShow] = useState(false);
     const [formSubmit, setFormSubmit] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [updateLoading, setUpdateLoading] = useState(false);
-    const [userCount, setUserCount] = useState(userData.length || 0);
+    const [userCount, setUserCount] = useState(0);
+
+    const { data: usersData, isLoading } = useGetUsersQuery();
+
+    // const [updateUser] = useUpdateUserMutation();
+    const [updatePassword] = useUpdatePasswordMutation();
+    const [register] = useRegisterMutation();
+    const [updateUserInfo] = useUpdateUserInfoMutation();
+    const [deleteUser] = useDeleteUserMutation();
 
     const tableHeaders = [
-        { label: 'ID', value: 'id' },
-        { label: 'Username', value: 'username' },
         { label: 'Name', value: 'name' },
         { label: 'Email', value: 'email' },
     ];
 
-    const deleteUser = async () => {
+    useEffect(() => {
+        // if no users has been set
+        if (!isLoading && !users.length) {
+            setUsers(usersData);
+            setInitialUsers(usersData);
+            setUserCount(users.length);
+        } else {
+            setUsers([])
+            setInitialUsers([]);
+        }
+    }, [usersData, isLoading]);
+
+    const onUserDelete = async () => {
         setDeleteLoading(true);
 
-        const res = await fetch(`https://jsonplaceholder.typicode.com/users/${selectedUser.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
+        // send user id to remove
+        const res = await deleteUser(selectedUser._id).unwrap();
 
         if (!res) throw new Error('Unable to delete user');
 
-        const data = await res.json();
-
-        if (!Object.keys(data).length) {
+        if (res.hasOwnProperty('success') && res.success) {
             setDeleteLoading(false); // set deleting flag
 
             // update users
-            const newUsers = users.filter((user) => user.id !== selectedUser.id);
+            const newUsers = users.filter((user) => user._id !== selectedUser._id);
             setUsers([ ...newUsers ]);
             setInitialUsers([ ...newUsers ]);
 
@@ -90,24 +110,29 @@ const AdminScreen = () => {
         }
     }
 
-    const updateUser = async (user) => {
-        const res = await fetch(`https://jsonplaceholder.typicode.com/users/${user.id}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        });
+    const onUpdateUser = async (user) => {
 
-        if (!res) throw new Error('Fail to update user.');
+        setUpdateLoading(true); // set update loading status
 
-        const data = await res.json();
+        // send update info for update
+        const res = await updateUserInfo(user._id, { name: user.name, email: user.email }).unwrap();
 
-        if (data && data.hasOwnProperty('id')) {
+        if (res && res.hasOwnProperty('_id')) {
 
-            // set new update users 
-            const updateUsers = [];
+            setUpdateLoading(false); // set update loading status
+
+            console.log(`User has been updated.`, user);
+
+            const updatedUsers = [ ...users ];
+            updatedUsers.forEach((u) => {
+                if (u._id === user._id) {
+                    u.name = user.name;
+                    u.email = user.email;
+                }
+            });
+
+            setUsers(updatedUsers);
+            setInitialUsers(updatedUsers);
 
         }
     }
@@ -118,7 +143,14 @@ const AdminScreen = () => {
     
     const handleShow = async (user) => {
         setFormSubmit(true);
-        await createUser(user); // send new user to populate in database
+        
+        if (!Object.keys(selectedUser).length) {
+            await createUser(user);
+        } else {
+            await onUpdateUser(user);
+            setSelectedUser({});
+        }
+
         setShow(false); // close modal after user is created
     };
 
@@ -126,7 +158,7 @@ const AdminScreen = () => {
         setShow(true); // open user modal
     }
 
-  if (!users) {
+  if (isLoading && !users.length) {
     return (
         <div className="d-flex justify-content-centers">
             <span className="spinner-border"></span>
@@ -151,14 +183,24 @@ const AdminScreen = () => {
                         onClick={ onShowUpdate }
                     >
                         <div className="d-flex flex-column align-items-center justify-content-center px-3">
-                            <FaTools />
-                            <small>Update</small>
+                            {
+                                !updateLoading ?
+                                <>
+                                    <FaTools />
+                                    <small>Update</small>
+                                </>
+                                :
+                                <>
+                                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                    <span className="role">Updating</span>
+                                </>
+                            }
                         </div>
                     </button>
                     <button 
                         className="btn btn-sm btn-danger" 
                         disabled={ !Object.keys(selectedUser).length }
-                        onClick={ deleteUser }
+                        onClick={ onUserDelete }
                     >
                         <div className="d-flex flex-column align-items-center justify-content-center px-3 mx-1">
                             {

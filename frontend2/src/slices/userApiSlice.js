@@ -4,6 +4,12 @@ const USERS_URL = '/api/users';
 
 export const userApiSlice = apiSlice.injectEndpoints({
      endpoints: (builder) => ({
+        getUsers: builder.query({
+            query: () => ({
+                url: `${USERS_URL}`,
+                method: 'GET'
+            })
+        }),
         login: builder.mutation({
             query: (data) => ({
                 url: `${USERS_URL}/auth`,
@@ -39,10 +45,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
-        getUsers: builder.query({
-            query: (data) => ({
-                url: `https://jsonplaceholder.typicode.com/users`,
-                method: 'GET',
+        deleteUser: builder.mutation({
+            query: (id) => ({
+                url: `${USERS_URL}/${id}`,
+                method: 'DELETE'
+            })
+        }),
+        updateUserInfo: builder.mutation({
+            query: (id, data) => ({
+                url: `${USERS_URL}/${id}`,
+                method: 'PUT',
                 body: data
             })
         })
@@ -55,5 +67,7 @@ export const {
     useUpdateUserMutation,
     useUpdatePasswordMutation,
     useRegisterMutation,
-    useGetUsersQuery
+    useGetUsersQuery,
+    useDeleteUserMutation,
+    useUpdateUserInfoMutation
 } = userApiSlice;

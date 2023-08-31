@@ -49,7 +49,7 @@ const Header = () => {
                             </NavDropdown>
                         </>
                     </Nav>
-                    <Nav>
+                   { userInfo.group.includes('W_ADMIN') && <Nav>
                         <>
                             <NavDropdown title='Admin'>
                                 <LinkContainer to='/view'>
@@ -57,7 +57,7 @@ const Header = () => {
                                 </LinkContainer>
                             </NavDropdown>
                         </>
-                    </Nav>
+                    </Nav> }
                     <Nav className='ms-auto'>
                         <>
                             <NavDropdown title={ userInfo.name } id='username'>

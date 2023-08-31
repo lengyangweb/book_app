@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Form } from 'react-bootstrap';
 import { validatePassword } from '../utils/passwordUtil';
 import { FaUserPlus } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 
 function CreateUserModal({ 
   show, 
@@ -14,43 +15,51 @@ function CreateUserModal({
 
   const [errMsg, setErrMsg] = useState('');
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passErrMsg, setPassErrMsg] = useState('');
 
   const isUpdateUser = Object.keys(selectedUser).length ? true : false;
+
+  useEffect(() => {
+    if (isUpdateUser) {
+      setName(selectedUser.name);
+      setEmail(selectedUser.email);
+    }
+  }, [selectedUser])
 
   const handleSubmit = () => {
     if (errMsg) setErrMsg('');
 
-    if (passErrMsg) setPassErrMsg('');
-
     // check if all the fields are filled out
-    if (!username || !name || !email || !password) return setErrMsg('Make sure all fields are filled.');
+    if (!name || !email) return setErrMsg('Make sure all fields are filled.');
 
-    // check for a valid password
-    const validPass = validatePassword(password);
-    if (validPass) return setPassErrMsg(validPass);
+    if (!isUpdateUser) { // if not updating user
+      // check for a valid password
+      const validPass = validatePassword(password);
+      if (validPass) return setPassErrMsg(validPass);
+    }
 
-    handleShow({ username, name, email, password });
+    const userObj = { name, email };
+    
+    if (!isUpdateUser) {
+      userObj['password'] = password;
+    } else {
+      userObj['_id'] = selectedUser._id;
+    }
+
+    handleShow(userObj);
     resetForm();
   }
 
   const onClose = () => {
     resetForm();
     setErrMsg('');
-    setPassErrMsg('');
     handleClose();
   }
 
   const resetForm = () => {
     setName('');
-    setUsername('');
     setEmail('');
-    setPassword('');
   }
-
 
   return (
     <>
@@ -70,37 +79,18 @@ function CreateUserModal({
               <Form.Label>Name:</Form.Label>
               <Form.Control 
                 type='text'
-                value={ selectedUser.name || name }
+                value={ name }
                 onChange={ (e) => setName(e.target.value) }
-              />
-            </Form.Group>
-            <Form.Group className='my-3'>
-              <Form.Label>Username:</Form.Label>
-              <Form.Control 
-               type='text'
-                value={ selectedUser.username || username }
-                onChange={ (e) => setUsername(e.target.value) }
               />
             </Form.Group>
             <Form.Group className='my-3'>
               <Form.Label>Email:</Form.Label>
               <Form.Control 
                 type='email'
-                value={ selectedUser.email || email }
+                value={ email }
                 onChange={ (e) => setEmail(e.target.value) }
               />
             </Form.Group>
-            { !isUpdateUser && 
-              <Form.Group className='mt-3'>
-              <Form.Label>Password:</Form.Label>
-              <Form.Control 
-                type='password'
-                value={ password }
-                onChange={ (e) => setPassword(e.target.value) }
-              />
-            </Form.Group>
-            }
-            { passErrMsg && (<small className='text-danger'>{ passErrMsg }</small>)}
           </form>
         </Modal.Body>
         <Modal.Footer>
@@ -114,6 +104,13 @@ function CreateUserModal({
       </Modal>
     </>
   );
+}
+
+CreateUserModal.propTypes = {
+  show: PropTypes.bool, 
+  handleShow: PropTypes.func, 
+  handleClose: PropTypes.func,
+  selectedUser: PropTypes.object
 }
 
 export default CreateUserModal;

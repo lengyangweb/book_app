@@ -19,6 +19,7 @@ import ProfileScreen from './screens/ProfileScreen.jsx';
 import ChangePasswordScreen from './screens/ChangePasswordScreen.jsx';
 import AdminScreen from './screens/AdminScreen.jsx';
 import { userLoader } from './loaders/userLoader.js';
+import AdminRoute from './components/AdminRoute.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,7 +29,9 @@ const router = createBrowserRouter(
         <Route path='/home' element={<HomeScreen />}></Route>
         <Route path='/profile' element={ <ProfileScreen /> } />
         <Route path='/change-password' element={ <ChangePasswordScreen /> } />
-        <Route path='/view' element={ <AdminScreen /> } loader={ userLoader } />
+        <Route path='' element={ <AdminRoute/> } >
+          <Route path='/view' element={ <AdminScreen /> } loader={ userLoader } />
+        </Route>
       </Route>
     </Route>
   )

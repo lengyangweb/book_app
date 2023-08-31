@@ -4,6 +4,7 @@ const GridRow = ({
     headers, 
     item, 
     selectType,
+    resetSeleted,
     singleSelection,
     multiSelection,
     onSingleSelection,
