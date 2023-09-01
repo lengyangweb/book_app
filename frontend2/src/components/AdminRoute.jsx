@@ -1,24 +1,21 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 const AdminRoute = () => {
-    const userInfo = useSelector(state => state.auth);
+    // get user info
+    const { userInfo } = useSelector(state => state.auth);
 
     // if user doesn't have group
-    if (!userInfo.hasOwnProperty('group')) {
-      return <Navigate to='/' replace />
+    if (!userInfo || !userInfo.hasOwnProperty('group') || !userInfo.group.includes('W_ADMIN')) {
+      return <Navigate to='/home' />
     }
 
-    // check if user have admin role
-    const allow = userInfo.group.includes('W_ADMIN');
-
-    return allow ? (
+    return(
         <>
-          <Header />
           <Outlet />
         </>
-      ) : <Navigate to='/' replace />
+    ) 
 }
 
 export default AdminRoute

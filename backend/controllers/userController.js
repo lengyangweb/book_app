@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken.js';
 import User from "../models/User.js";
+import { isAdmin } from '../utils/groupHelper.js';
 
 // @desc    Get all of the users
 // router   /api/user
@@ -126,7 +127,8 @@ const updateUserProfile = async(req, res) => {
         res.status(200).json({
             _id: updatedUser._id,
             name: updatedUser.name,
-            email: updatedUser.email
+            email: updatedUser.email,
+            group: updatedUser.group
         })
     } else {
         res.status(404);

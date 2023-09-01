@@ -3,7 +3,7 @@ import { Container, Card, Col, Form } from 'react-bootstrap';
 import { FaUserAlt } from 'react-icons/fa';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
-import { useUpdateUserMutation } from '../slices/userApiSlice';
+import { useUpdateUserProfileMutation } from '../slices/userApiSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 function ProfileScreen() {
@@ -11,7 +11,7 @@ function ProfileScreen() {
   const [email, setEmail] = useState('');
 
   const dispatch = useDispatch();
-  const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const [updateUserProfile, { isLoading }] = useUpdateUserProfileMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -26,7 +26,7 @@ function ProfileScreen() {
     e.preventDefault();
 
     try {
-      const res = await updateUser({ name, email }).unwrap();
+      const res = await updateUserProfile({ name, email }).unwrap();
 
       if (res && res.hasOwnProperty('_id')) {
         dispatch(setCredentials({ ...res }));
