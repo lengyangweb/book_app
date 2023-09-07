@@ -37,7 +37,7 @@ function LoginScreen() {
 
   return (
     <>
-      <div className="container animate__animated animate__zoomIn" style={{ 'width': '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div id='animate_container' className="container animate__animated animate__zoomIn" style={{ 'width': '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <div className="col-12 col-lg-5">
           <div className="card shadow">
               <h1 className='p-3 bg-dark text-light'>

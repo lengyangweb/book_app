@@ -19,8 +19,10 @@ const AdminScreen = () => {
     // const userData = useLoaderData();
 
     const [users, setUsers] = useState([]);
-    const [initialUsers, setInitialUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState({});
+    const [gridItems, setGridItems] = useState([]);
+    const [initialGridItems, setInitialGridItem] = useState([]);
+
     const [show, setShow] = useState(false);
     const [formSubmit, setFormSubmit] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
@@ -42,13 +44,15 @@ const AdminScreen = () => {
 
     useEffect(() => {
         // if no users has been set
-        if (!isLoading && !users.length) {
-            setUsers(usersData);
-            setInitialUsers(usersData);
+        if (!isLoading && !gridItems.length) {
+            const items = usersData.map(({ _id, name, email }) => ({ _id, name, email }));
+            setGridItems(items);
+            setInitialGridItem(items);
             setUserCount(users.length);
         } else {
-            setUsers([])
-            setInitialUsers([]);
+            setGridItems([]);
+            setInitialGridItem([]);
+            setSelectedUser({});
         }
     }, [usersData, isLoading]);
 
@@ -65,8 +69,8 @@ const AdminScreen = () => {
 
             // update users
             const newUsers = users.filter((user) => user._id !== selectedUser._id);
-            setUsers([ ...newUsers ]);
-            setInitialUsers([ ...newUsers ]);
+            setGridItems([ ...newUsers ]);
+            setInitialGridItem([ ...newUsers ]);
 
             // show success dialog
             toast.success(`User ${selectedUser['name']} has been removed.`, {
@@ -102,8 +106,9 @@ const AdminScreen = () => {
             setUserCount(userCount + 1);
 
             // update users info
-            setUsers(updatedUsers);
-            setInitialUsers(updatedUsers);
+            setGridItems(updatedUsers);
+            setInitialGridItem(updatedUsers);
+
             toast.success('User has been created.', {
                 position: toast.POSITION.TOP_CENTER
             });
@@ -111,30 +116,31 @@ const AdminScreen = () => {
     }
 
     const onUpdateUser = async (user) => {
-
+        
         setUpdateLoading(true); // set update loading status
 
         // send update info for update
-        const res = await updateUserInfo(user._id, { name: user.name, email: user.email }).unwrap();
+        const res = await updateUserInfo(user).unwrap();
 
-        if (res && res.hasOwnProperty('_id')) {
+        if (res && res.hasOwnProperty('success') && res.success) {
 
             setUpdateLoading(false); // set update loading status
 
-            console.log(`User has been updated.`, user);
-
-            const updatedUsers = [ ...users ];
-            updatedUsers.forEach((u) => {
+            const updatedGridItems = [ ...gridItems ];
+            updatedGridItems.forEach((u) => {
                 if (u._id === user._id) {
                     u.name = user.name;
                     u.email = user.email;
                 }
             });
 
-            setUsers(updatedUsers);
-            setInitialUsers(updatedUsers);
+            setGridItems(updatedGridItems);
+            setInitialGridItem(updatedGridItems);
+            setSelectedUser({});
 
         }
+
+        return res.success;
     }
     
     const handleClose = () => {
@@ -147,8 +153,8 @@ const AdminScreen = () => {
         if (!Object.keys(selectedUser).length) {
             await createUser(user);
         } else {
-            await onUpdateUser(user);
-            setSelectedUser({});
+            const userUpdated = await onUpdateUser(user);
+            userUpdated ? toast.success('User info has been updated.') : toast.error('Update user fail.');
         }
 
         setShow(false); // close modal after user is created
@@ -223,8 +229,8 @@ const AdminScreen = () => {
             <Col lg={12} className='py-4'>
                 <GridBox 
                     headers={ tableHeaders } 
-                    items={ users } 
-                    initialItems = { initialUsers }
+                    items={ gridItems } 
+                    initialItems = { initialGridItems }
                     setItem={ setUsers }
                     setSelectedItem={ setSelectedUser }
                     formSubmit={ formSubmit }
