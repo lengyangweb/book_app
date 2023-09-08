@@ -32,17 +32,9 @@ function CreateUserModal({
     // check if all the fields are filled out
     if (!name || !email) return setErrMsg('Make sure all fields are filled.');
 
-    if (!isUpdateUser) { // if not updating user
-      // check for a valid password
-      const validPass = validatePassword(password);
-      if (validPass) return setPassErrMsg(validPass);
-    }
-
     const userObj = { name, email };
     
-    if (!isUpdateUser) {
-      userObj['password'] = password;
-    } else {
+    if (isUpdateUser) {
       userObj['_id'] = selectedUser._id;
     }
 

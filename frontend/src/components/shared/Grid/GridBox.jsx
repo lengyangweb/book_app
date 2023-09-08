@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import GridHeader from './GridHeader';
 import GridRow from './GridRow';
@@ -11,12 +11,21 @@ const GridBox = ({
     setItem,
     initialItems,
     selectType,
+    selectedItem,
     setSelectedItem
 }) => {
   const [sortStatus, setSortStatus] = useState('');
   const [singleSelection, setSingleSelection] = useState({});
   const [multiSelection, setMultiSelection] = useState([]);
 
+  useEffect(() => {
+    setSingleSelection(selectedItem);
+  }, [selectedItem])
+
+  /**
+   * Sort all item in acending order
+   * @param {*} field - an item field
+   */
   const sortAsc = (field) => {
     const sortedItem = items.sort((a, b) => {
         // if value of field is type string
@@ -34,6 +43,10 @@ const GridBox = ({
     setItem([ ...sortedItem ]);
   }
 
+  /**
+   * Sort all items in descending order
+   * @param {*} field - an item field
+   */
   const sortDesc = (field) => {
     const sortedItem = items.sort((a, b) => {
         if (typeof a[field] === 'string') {
@@ -49,6 +62,12 @@ const GridBox = ({
     setItem([ ...sortedItem ]);
   }
 
+  /**
+   * Search for items whose field is equal to the value
+   * @param {*} field - an item field
+   * @param {*} value - an item value
+   * @returns boolean
+   */
   const onFilter = (field, value) => {
 
     if (!value) {
@@ -68,22 +87,38 @@ const GridBox = ({
     setItem(filterItems);
   }
 
+  /**
+   * Set an item as selected in single selection
+   * @param {*} item an item
+   */
   const onSingleSelection = (item) => {
-    const key = Object.keys(item)[0];
+    const key = Object.keys(item)[0]; // grab the first field of the selected item
+
+    // if an item is alreadly selected and it's equal to the new selected item
     if (Object.keys(singleSelection).length && item[key] == singleSelection[key]) {
-        setSingleSelection({});
-        setSelectedItem({});
+        setSingleSelection({}); // set item selected to nothing
+        setSelectedItem({}); // set item selected to nothing
     } else {
-        setSingleSelection({ ...item });
-        setSelectedItem({ ...item });
+        // set selected item to the new selected item
+        setSingleSelection({ ...item }); 
+        // set selected item to the new selected item
+        setSelectedItem({ ...item }); 
     }
   }
 
+  /**
+   * Set an item as selected in multi selection
+   * @param {*} item an item
+   */
   const onMultiSelection = (item) => {
-    const key = Object.keys(item)[0];
+    const key = Object.keys(item)[0]; // get the first field of the new selected item
+
+    // if the new selected item is already in selection
     if (multiSelection.some((selected) => selected[key] === item[key])) {
+        // remove the new selected item from the selection
         setMultiSelection([ ...multiSelection.filter((selected) => selected[key] !== item[key]) ]);
     } else {
+        // add the new selected item in the selection
         setMultiSelection([ ...multiSelection, item ]);
     }
   }
@@ -145,6 +180,7 @@ GridBox.propTypes = {
     setItem: PropTypes.func,
     initialItems: PropTypes.array,
     selectType: PropTypes.object,
+    selectedItem: PropTypes.object,
     setSelectedItem: PropTypes.func
 }
 

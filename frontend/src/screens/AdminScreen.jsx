@@ -150,11 +150,13 @@ const AdminScreen = () => {
     const handleShow = async (user) => {
         setFormSubmit(true);
         
-        if (!Object.keys(selectedUser).length) {
+        if (!Object.keys(selectedUser).length) { // check if created new user
             await createUser(user);
-        } else {
+        } else { // updating an existing user
             const userUpdated = await onUpdateUser(user);
-            userUpdated ? toast.success('User info has been updated.') : toast.error('Update user fail.');
+            userUpdated 
+            ? toast.success('User info has been updated.') 
+            : toast.error('Update user fail.');
         }
 
         setShow(false); // close modal after user is created
@@ -232,6 +234,7 @@ const AdminScreen = () => {
                     items={ gridItems } 
                     initialItems = { initialGridItems }
                     setItem={ setUsers }
+                    selectedItem={ selectedUser }
                     setSelectedItem={ setSelectedUser }
                     formSubmit={ formSubmit }
                 />
