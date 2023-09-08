@@ -26,6 +26,10 @@ function CreateUserModal({
     }
   }, [selectedUser])
 
+  /**
+   * Hanlde create or update user 
+   * @returns an error if any
+   */
   const handleSubmit = () => {
     if (errMsg) setErrMsg('');
 
@@ -42,12 +46,18 @@ function CreateUserModal({
     resetForm();
   }
 
+  /**
+   * on modal close
+   */
   const onClose = () => {
     resetForm();
     setErrMsg('');
     handleClose();
   }
 
+  /**
+   * Reset form values
+   */
   const resetForm = () => {
     setName('');
     setEmail('');

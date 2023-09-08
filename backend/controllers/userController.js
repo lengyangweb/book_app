@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken.js';
 import User from "../models/User.js";
 import { isAdmin } from '../utils/groupHelper.js';
+import { generateGravatar } from '../utils/gravatarHelper.js';
 
 // @desc    Get all of the users
 // router   /api/user
@@ -30,10 +31,14 @@ const registerUser = asyncHandler(async(req, res) => {
         throw new Error('User already exist');
     }
 
+    // generate an avatar
+    const avatar = generateGravatar(email);
+
     const user = await User.create({
         name,
         email,
-        password
+        password,
+        avatar
     });
 
     if (user) {
@@ -41,7 +46,8 @@ const registerUser = asyncHandler(async(req, res) => {
         res.status(201).json({
             _id: user._id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            avatar
         });
     } else {
         res.status(400);
@@ -63,7 +69,8 @@ const authUser = asyncHandler(async(req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
-            group: user.group
+            group: user.group,
+            avatar: user.avatar
         });
     } else {
         res.status(401);

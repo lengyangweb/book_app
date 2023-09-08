@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
         require: true,
         required: true
     },
+    avatar: {
+        type: String
+    },
     group: {
         type: Array
     }

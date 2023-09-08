@@ -43,10 +43,16 @@ function ProfileScreen() {
         <Col sm lg={5}>
           <Card>
             <h1 className='bg-dark p-3 text-light'>
-              <div className="d-flex align-item-center">
-                <div className="d-flex align-items-center border p-4" style={{ borderRadius: '100%' }}>
-                  <FaUserAlt style={{ fontSize: '1.4rem' }} />
-                </div>
+              <div className="d-flex align-items-center">
+                {/* <div className="d-flex align-items-center border p-4" style={{}}> */}
+                  { !userInfo.avatar && <FaUserAlt className='border p-4' style={{ fontSize: '5rem', borderRadius: '100%' }} /> }
+
+                  { userInfo.avatar && <img 
+                    src={ userInfo.avatar } 
+                    alt="profile picture" 
+                    style={ profImgStyle } 
+                  /> }
+                {/* </div> */}
                 <span className='mx-2 mt-2'>User Profile</span>
               </div>
             </h1>
@@ -76,6 +82,11 @@ function ProfileScreen() {
       {/* </div> */}
     </Container>
   )
+}
+
+const profImgStyle = {
+  borderRadius: '100%',
+  width: '60px'
 }
 
 export default ProfileScreen

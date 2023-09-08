@@ -85,24 +85,24 @@ const AdminScreen = () => {
     }
 
     const createUser = async (user) => {
-        const res = await fetch('https://jsonplaceholder.typicode.com/users', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        });
+        // const res = await fetch('https://jsonplaceholder.typicode.com/users', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(user)
+        // });
+
+        const res = await createUser(user);
 
         if (!res) throw new Error('Fail to create user.');
 
-        const data = await res.json();
-
         // if user is updated and have an id
-        if (data && data.hasOwnProperty('id')) {
+        if (res && res.hasOwnProperty('_id')) {
 
             // set new update users
-            const updatedUsers = [ ...users, { id: userCount + 1, ...user } ];
+            const updatedUsers = [ ...users, { _id: userCount + 1, ...user } ];
             setUserCount(userCount + 1);
 
             // update users info
