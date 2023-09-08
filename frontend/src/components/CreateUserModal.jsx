@@ -14,8 +14,10 @@ function CreateUserModal({
 }) {
 
   const [errMsg, setErrMsg] = useState('');
+  const [errPwd, setErrPwd] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const isUpdateUser = Object.keys(selectedUser).length ? true : false;
 
@@ -38,7 +40,12 @@ function CreateUserModal({
 
     const userObj = { name, email };
     
-    if (isUpdateUser) {
+    // if not updating a user
+    if (!isUpdateUser) {
+      const validPass = validatePassword(password); // validate password
+      if (validPass) return setErrPwd(validPass); // if password error
+      userObj['password'] = password; // set password
+    } else {
       userObj['_id'] = selectedUser._id;
     }
 
@@ -52,6 +59,7 @@ function CreateUserModal({
   const onClose = () => {
     resetForm();
     setErrMsg('');
+    setErrPwd('');
     handleClose();
   }
 
@@ -61,6 +69,7 @@ function CreateUserModal({
   const resetForm = () => {
     setName('');
     setEmail('');
+    setPassword('');
   }
 
   return (
@@ -93,6 +102,19 @@ function CreateUserModal({
                 onChange={ (e) => setEmail(e.target.value) }
               />
             </Form.Group>
+            { !isUpdateUser && 
+              <Form.Group>
+                <Form.Label>Password:</Form.Label>
+                <Form.Control
+                  type='password'
+                  value={ password }
+                  onChange={ (e) => setPassword(e.target.value) }
+                />
+              </Form.Group>
+            }
+            { ( !isUpdateUser && errPwd ) &&
+              (<strong className='text-danger my-2'><small>{ errPwd }</small></strong>)
+            }
           </form>
         </Modal.Body>
         <Modal.Footer>

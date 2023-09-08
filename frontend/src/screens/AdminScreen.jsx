@@ -68,7 +68,7 @@ const AdminScreen = () => {
             setDeleteLoading(false); // set deleting flag
 
             // update users
-            const newUsers = users.filter((user) => user._id !== selectedUser._id);
+            const newUsers = gridItems.filter((user) => user._id !== selectedUser._id);
             setGridItems([ ...newUsers ]);
             setInitialGridItem([ ...newUsers ]);
 
@@ -85,24 +85,18 @@ const AdminScreen = () => {
     }
 
     const createUser = async (user) => {
-        // const res = await fetch('https://jsonplaceholder.typicode.com/users', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(user)
-        // });
+        // send new user to create
+        const res = await register(user);
 
-        const res = await createUser(user);
-
+        // if any error
         if (!res) throw new Error('Fail to create user.');
 
         // if user is updated and have an id
-        if (res && res.hasOwnProperty('_id')) {
+        if (res && res.hasOwnProperty('data') && res.data.hasOwnProperty('_id')) {
+            const { data } = res;
 
             // set new update users
-            const updatedUsers = [ ...users, { _id: userCount + 1, ...user } ];
+            const updatedUsers = [ ...gridItems, data ];
             setUserCount(userCount + 1);
 
             // update users info

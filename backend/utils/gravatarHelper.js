@@ -8,7 +8,7 @@ import gravatar from 'gravatar-api';
 export const generateGravatar = (email) => {
   try {
     // get an avatar from gravatar api
-    const avatar = gravatar({ email });
+    const avatar = gravatar.imageUrl({ email });
     return avatar; // return avatar hash
   } catch (error) {
     console.error(`Fail trying to generate a gravatar`, error);
