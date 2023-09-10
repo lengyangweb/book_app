@@ -3,6 +3,7 @@ import Combo from '../shared/Combo/Combo'
 import { useSelector } from 'react-redux';
 import GridBox from '../shared/Grid/GridBox';
 import { Button, Row, Col } from 'react-bootstrap';
+import { FaTrashAlt, FaPlus } from 'react-icons/fa';
 
 const USER_ROLES = [
   { label: 'W_ADMIN', value: 'W_ADMIN' },
@@ -24,27 +25,23 @@ const RoleCombo = () => {
   const [roles, setRoles] = useState(ROLES);
 
   return (
-    <>
+    <div className='px-3'>
       <div className="d-flex flex-column">
         <div className="d-flex flex-column">
             <div className="lead">Role:</div>
             <div className="d-flex">
-              <Row>
-                <Col lg={10}>
                   <Combo 
                     selectedItem={ selectedRole }
                     setSelectedItem={ setSelectedRole }
                     defaultOptionText='Choose a role'
                     selection={ roleSelection }
-                  />
-                </Col>
-                <Col lg={2}>                
-                  <div className="d-flex">
-                    <Button disabled={ selectedRole } variant='success'>Add</Button>
-                    <Button disabled={ selectedDelRole } className='mx-2' variant='danger'>Remove</Button>
-                  </div>
-                </Col>
-              </Row>
+                  />               
+                    <Button size='sm' disabled={ selectedRole } className='mx-1' variant='success'>
+                      <FaPlus />
+                    </Button>
+                    <Button size='sm' disabled={ selectedDelRole } variant='danger'>
+                      <FaTrashAlt />
+                    </Button>
             </div>
         </div>
         {/* role grid */}
@@ -59,7 +56,7 @@ const RoleCombo = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

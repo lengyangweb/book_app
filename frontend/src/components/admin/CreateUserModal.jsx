@@ -5,7 +5,6 @@ import { Form, Col, Row } from 'react-bootstrap';
 import { validatePassword } from '../../utils/passwordUtil';
 import { FaUserPlus } from 'react-icons/fa';
 import PropTypes from 'prop-types';
-import Combo from '../shared/Combo/Combo';
 import RoleCombo from './RoleCombo';
 
 function CreateUserModal({ 
@@ -76,7 +75,12 @@ function CreateUserModal({
 
   return (
     <>
-      <Modal show={show} onHide={onClose}>
+      <Modal 
+        show={show} 
+        onHide={onClose} 
+        size={ !isUpdateUser ? 'md' : 'lg' }
+        centered={true}
+      >
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="d-flex align-items-center">
@@ -85,51 +89,60 @@ function CreateUserModal({
             </div>
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          { errMsg && (<strong className='text-danger'><small>{ errMsg }</small></strong>) }
-          <form className='py-3 px-2'>
-            <Form.Group>
-              <Form.Label>Name:</Form.Label>
-              <Form.Control 
-                type='text'
-                value={ name }
-                onChange={ (e) => setName(e.target.value) }
-              />
-            </Form.Group>
-            <Form.Group className='my-3'>
-              <Form.Label>Email:</Form.Label>
-              <Form.Control 
-                type='email'
-                value={ email }
-                onChange={ (e) => setEmail(e.target.value) }
-              />
-            </Form.Group>
-            { !isUpdateUser && 
-              <Form.Group>
-                <Form.Label>Password:</Form.Label>
-                <Form.Control
-                  type='password'
-                  value={ password }
-                  onChange={ (e) => setPassword(e.target.value) }
-                />
-              </Form.Group>
-            }
-            { ( !isUpdateUser && errPwd ) &&
-              (<strong className='text-danger my-2'><small>{ errPwd }</small></strong>)
-            }
-          </form>
-          {isUpdateUser && <Col lg={12}>
-                <RoleCombo />
-            </Col>}
+        <Modal.Body className='pb-5'>
+          <Row>
+            <Col lg={ !isUpdateUser ? 12 : 6 }>
+              { errMsg && (<strong className='text-danger'><small>{ errMsg }</small></strong>) }
+              <div className="d-flex flex-column">
+                <div className="lead my-1">User Info:</div>
+                <form className='py-3 px-2 card px-4'>
+                  <Form.Group>
+                    <Form.Label>Name:</Form.Label>
+                    <Form.Control 
+                      type='text'
+                      value={ name }
+                      onChange={ (e) => setName(e.target.value) }
+                    />
+                  </Form.Group>
+                  <Form.Group className='my-3'>
+                    <Form.Label>Email:</Form.Label>
+                    <Form.Control 
+                      type='email'
+                      value={ email }
+                      onChange={ (e) => setEmail(e.target.value) }
+                    />
+                  </Form.Group>
+                  { !isUpdateUser && 
+                    <Form.Group>
+                      <Form.Label>Password:</Form.Label>
+                      <Form.Control
+                        type='password'
+                        value={ password }
+                        onChange={ (e) => setPassword(e.target.value) }
+                      />
+                    </Form.Group>
+                  }
+                  { ( !isUpdateUser && errPwd ) &&
+                    (<strong className='text-danger my-2'><small>{ errPwd }</small></strong>)
+                  }
+                  <div className="d-flex justify-content-center mt-4">
+                    <Button variant="primary" onClick={  handleSubmit}>
+                      { isUpdateUser ? 'Update' : 'Create' } User
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            </Col>
+            {isUpdateUser && <Col lg={isUpdateUser ? 6 : 12}>
+                  <RoleCombo />
+              </Col>}
+          </Row>
         </Modal.Body>
-        <Modal.Footer>
+        {/* <Modal.Footer>
           <Button variant="secondary" onClick={onClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={  handleSubmit}>
-            { isUpdateUser ? 'Update' : 'Create' } User
-          </Button>
-        </Modal.Footer>
+        </Modal.Footer> */}
       </Modal>
     </>
   );
