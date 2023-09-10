@@ -93,9 +93,9 @@ function CreateUserModal({
           <Row>
             <Col lg={ !isUpdateUser ? 12 : 6 }>
               { errMsg && (<strong className='text-danger'><small>{ errMsg }</small></strong>) }
-              <div className="d-flex flex-column">
-                <div className="lead my-1">User Info:</div>
-                <form className='py-3 px-2 card px-4'>
+              <div className="lead bg-dark text-light p-3">User Information</div>
+              <div className="d-flex flex-column border">
+                <form className='py-3 px-4'>
                   <Form.Group>
                     <Form.Label>Name:</Form.Label>
                     <Form.Control 

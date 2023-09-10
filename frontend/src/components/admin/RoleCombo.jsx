@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Combo from '../shared/Combo/Combo'
 import { useSelector } from 'react-redux';
 import GridBox from '../shared/Grid/GridBox';
@@ -16,8 +16,6 @@ const ROLES = [
 ];
 
 const RoleCombo = () => {
-  const group = useSelector(state => state.auth.group);
-  
   const roleheaders = [{ label: 'Role', value: 'value' }];
   const [roleSelection, setRoleSelection] = useState(USER_ROLES);
   const [selectedRole, setSelectedRole] = useState({});
@@ -25,12 +23,12 @@ const RoleCombo = () => {
   const [roles, setRoles] = useState(ROLES);
 
   return (
-    <div className='px-3'>
-      <div className="d-flex flex-column">
+    <>
+      <div className="lead bg-dark text-light p-3">Role</div>
+      <div className="d-flex flex-column border py-3 px-4">
         <div className="d-flex flex-column">
-            <div className="lead">Role:</div>
             <div className="d-flex">
-                  <Combo 
+                  <Combo
                     selectedItem={ selectedRole }
                     setSelectedItem={ setSelectedRole }
                     defaultOptionText='Choose a role'
@@ -56,7 +54,7 @@ const RoleCombo = () => {
           />
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
