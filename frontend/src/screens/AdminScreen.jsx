@@ -4,7 +4,7 @@ import { Col, Row } from 'react-bootstrap';
 import GridBox from '../components/shared/Grid/GridBox';
 import { toast } from 'react-toastify';
 import { FaTrashAlt, FaTools, FaUserPlus } from 'react-icons/fa'
-import CreateUserModal from '../components/CreateUserModal';
+import CreateUserModal from '../components/admin/CreateUserModal';
 
 import { 
     useUpdateUserInfoMutation,
@@ -14,6 +14,7 @@ import {
     useDeleteUserMutation
 
 } from '../slices/userApiSlice';
+import Combo from '../components/shared/Combo/Combo';
 
 const AdminScreen = () => {
     // const userData = useLoaderData();
@@ -138,8 +139,11 @@ const AdminScreen = () => {
     }
     
     const handleClose = () => {
-        setShow(false);
-    };
+        setShow(false); // close modal
+
+        // if a user is selected then unselected
+        if (selectedUser) setSelectedUser({});
+    };  
     
     const handleShow = async (user) => {
         setFormSubmit(true);

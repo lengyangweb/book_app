@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { Form } from 'react-bootstrap';
-import { validatePassword } from '../utils/passwordUtil';
+import { Form, Col, Row } from 'react-bootstrap';
+import { validatePassword } from '../../utils/passwordUtil';
 import { FaUserPlus } from 'react-icons/fa';
 import PropTypes from 'prop-types';
+import Combo from '../shared/Combo/Combo';
+import RoleCombo from './RoleCombo';
 
 function CreateUserModal({ 
   show, 
@@ -116,6 +118,9 @@ function CreateUserModal({
               (<strong className='text-danger my-2'><small>{ errPwd }</small></strong>)
             }
           </form>
+          {isUpdateUser && <Col lg={12}>
+                <RoleCombo />
+            </Col>}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onClose}>

@@ -19,7 +19,7 @@ import ProfileScreen from './screens/ProfileScreen.jsx';
 import ChangePasswordScreen from './screens/ChangePasswordScreen.jsx';
 import AdminScreen from './screens/AdminScreen.jsx';
 import { userLoader } from './loaders/userLoader.js';
-import AdminRoute from './components/AdminRoute.jsx';
+import AdminRoute from './components/admin/AdminRoute.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

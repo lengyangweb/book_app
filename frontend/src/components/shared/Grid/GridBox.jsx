@@ -179,7 +179,7 @@ GridBox.propTypes = {
     items: PropTypes.array,
     setItem: PropTypes.func,
     initialItems: PropTypes.array,
-    selectType: PropTypes.object,
+    selectType: PropTypes.string,
     selectedItem: PropTypes.object,
     setSelectedItem: PropTypes.func
 }
