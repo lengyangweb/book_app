@@ -10,15 +10,13 @@ const Combo = ({
 }) => {
   // const [select, setSelect] = useState({});
 
-  const onSelect = (item) => console.log(item);
-
   return (
     <>
-      <Form.Select aria-label="Default select example">
+      <Form.Select aria-label="Default select example" onChange={(e) => setSelectedItem({ label: e.target.value, value: e.target.value })}>
         <option>{ defaultOptionText }</option>
         {
           selection.map((item) => {
-            return (<option key={ item.label } value={ item.value } onChange={() => onSelect(item)}>{ item.label }</option>)
+            return (<option key={ item.label } value={ item.value }>{ item.label }</option>)
           })
         }
       </Form.Select>

@@ -12,7 +12,8 @@ const GridBox = ({
     initialItems,
     selectType,
     selectedItem,
-    setSelectedItem
+    setSelectedItem,
+    maxHeight
 }) => {
   const [sortStatus, setSortStatus] = useState('');
   const [singleSelection, setSingleSelection] = useState({});
@@ -21,6 +22,14 @@ const GridBox = ({
   useEffect(() => {
     setSingleSelection(selectedItem);
   }, [selectedItem])
+
+    const tbodyStyle = { 
+        maxHeight: maxHeight ? maxHeight : '350px', 
+        overflow: 'auto', 
+        display: 'block', 
+        width: '100%', 
+        tableLayout: 'fixed'
+    };
 
   /**
    * Sort all item in acending order
@@ -166,14 +175,6 @@ const theadStyle = {
     tableLayout: 'fixed' 
 };
 
-const tbodyStyle = { 
-    maxHeight: '350px', 
-    overflow: 'auto', 
-    display: 'block', 
-    width: '100%', 
-    tableLayout: 'fixed'
-};
-
 GridBox.propTypes = {
     headers: PropTypes.array, 
     items: PropTypes.array,
@@ -181,7 +182,8 @@ GridBox.propTypes = {
     initialItems: PropTypes.array,
     selectType: PropTypes.string,
     selectedItem: PropTypes.object,
-    setSelectedItem: PropTypes.func
+    setSelectedItem: PropTypes.func,
+    maxHeight: PropTypes.string
 }
 
 export default GridBox

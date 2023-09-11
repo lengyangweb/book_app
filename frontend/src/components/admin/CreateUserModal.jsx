@@ -80,6 +80,7 @@ function CreateUserModal({
         onHide={onClose} 
         size={ !isUpdateUser ? 'md' : 'lg' }
         centered={true}
+        backdrop='static'
       >
         <Modal.Header closeButton>
           <Modal.Title>

@@ -4,10 +4,15 @@ import { useSelector } from 'react-redux';
 import GridBox from '../shared/Grid/GridBox';
 import { Button, Row, Col } from 'react-bootstrap';
 import { FaTrashAlt, FaPlus } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const USER_ROLES = [
   { label: 'W_ADMIN', value: 'W_ADMIN' },
-  { label: 'W_USER', Value: 'W_USER' }
+  { label: 'W_USER', Value: 'W_USER' },
+  { label: 'W_UPLOAD', value: 'W_UPLOAD' },
+  { label: 'W_LOOKUP', value: 'W_LOOKUP' },
+  { label: 'W_RERORT', value: 'W_REPORT' },
+  { label: 'W_EMPLOYEE', value: 'W_EMPLOYEE' }
 ]
 
 const ROLES = [
@@ -22,6 +27,42 @@ const RoleCombo = () => {
   const [selectedDelRole, setSelectedDelRole] = useState({});
   const [roles, setRoles] = useState(ROLES);
 
+  useState(() => {
+    console.log(selectedRole)
+  }, [selectedRole])
+
+  const onRoleAdd = () => {
+    console.log(selectedRole);
+
+    // remove role from selection role
+    setRoleSelection([ ...roleSelection.filter(({ label, value }) => selectedRole.value !== value) ]);
+
+    // added role to roles
+    const updatedRoles = [ ...roles, selectedRole ];
+    setRoles(updatedRoles);
+
+    // show dialog message
+    toast.success(`Role ${selectedRole.value} has been added`);
+
+    // un select new role
+    setSelectedRole({});
+
+  }
+
+  const onRoleRemove = () => {
+    
+    // create temp arr
+    const tempRoleArr = roles.filter(({ value }) => selectedDelRole['value'] !== value);
+    // update roles
+    setRoles(tempRoleArr);
+
+    // show success message
+    toast.success(`Role ${selectedDelRole['value']} has been removed.`);
+
+    // unset role to be deleted
+    setSelectedDelRole({});
+  }
+
   return (
     <>
       <div className="lead bg-dark text-light p-3">Role</div>
@@ -31,13 +72,21 @@ const RoleCombo = () => {
                   <Combo
                     selectedItem={ selectedRole }
                     setSelectedItem={ setSelectedRole }
-                    defaultOptionText='Choose a role'
+                    defaultOptionText='Choose a role...'
                     selection={ roleSelection }
                   />               
-                    <Button size='sm' disabled={ selectedRole } className='mx-1' variant='success'>
+                    <Button 
+                      disabled={ !Object.keys(selectedRole).length } 
+                      className='mx-1' variant='success'
+                      onClick={ onRoleAdd }
+                    >
                       <FaPlus />
                     </Button>
-                    <Button size='sm' disabled={ selectedDelRole } variant='danger'>
+                    <Button 
+                      disabled={ !Object.keys(selectedDelRole).length } 
+                      variant='danger'
+                      onClick={ onRoleRemove }
+                    >
                       <FaTrashAlt />
                     </Button>
             </div>
@@ -50,7 +99,8 @@ const RoleCombo = () => {
             setItem={ setRoleSelection }
             initialItems={ roles }
             selectedItem={ selectedDelRole }
-            setSelectedItem= { setSelectedRole }
+            setSelectedItem= { setSelectedDelRole }
+            maxHeight='150px'
           />
         </div>
       </div>
