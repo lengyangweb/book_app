@@ -57,6 +57,20 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: { name, email }
             })
+        }),
+        addGroup: builder.mutation({
+            query: (id, group) => ({
+                url: `${USERS_URL}/group/${id}`,
+                method: 'POST',
+                body: group
+            })
+        }),
+        removeGroup: builder.mutation({
+            query: (id, group) => ({
+                url: `${USERS_URL}/group/${id}`,
+                method: 'DELETE',
+                body: group
+            })
         })
      })
 });
@@ -69,5 +83,7 @@ export const {
     useRegisterMutation,
     useGetUsersQuery,
     useDeleteUserMutation,
-    useUpdateUserInfoMutation
+    useUpdateUserInfoMutation,
+    useAddGroupMutation,
+    useRemoveGroupMutation
 } = userApiSlice;

@@ -135,7 +135,9 @@ function CreateUserModal({
               </div>
             </Col>
             {isUpdateUser && <Col lg={isUpdateUser ? 6 : 12}>
-                  <RoleCombo />
+                  <RoleCombo 
+                    selectedUser={ selectedUser }
+                  />
               </Col>}
           </Row>
         </Modal.Body>

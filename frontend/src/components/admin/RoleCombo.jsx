@@ -5,6 +5,8 @@ import GridBox from '../shared/Grid/GridBox';
 import { Button, Row, Col } from 'react-bootstrap';
 import { FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
+import { useAddGroupMutation, useRemoveGroupMutation } from '../../slices/userApiSlice';
 
 const USER_ROLES = [
   { label: 'W_ADMIN', value: 'W_ADMIN' },
@@ -20,19 +22,31 @@ const ROLES = [
   { label: 'W_USER', value: 'W_USER' }
 ];
 
-const RoleCombo = () => {
+const RoleCombo = ({ selectedUser }) => {
   const roleheaders = [{ label: 'Role', value: 'value' }];
   const [roleSelection, setRoleSelection] = useState(USER_ROLES);
   const [selectedRole, setSelectedRole] = useState({});
   const [selectedDelRole, setSelectedDelRole] = useState({});
   const [roles, setRoles] = useState(ROLES);
 
-  useState(() => {
-    console.log(selectedRole)
-  }, [selectedRole])
+  useEffect(() => {
+    console.log(selectedUser)
+    // const structuredGroup = selectedUser.group.map((group) => ({ label: group, value: group }));
+    // console.log(structuredGroup)
+    // setRoles([ ...structuredGroup ]);
+  }, [selectedUser])
 
-  const onRoleAdd = () => {
-    console.log(selectedRole);
+  const [addGroup] = useAddGroupMutation();
+  const [removeGroup] = useRemoveGroupMutation();
+
+  const onRoleAdd = async () => {
+
+    const group = selectedRole.map(({ value }) => (value));
+
+    // remove user from backend first
+    const response = await addGroup(selectedUser._id, group).unwrap();
+
+    if (!response) throw new Error(`Fail trying to add new group to user.`);
 
     // remove role from selection role
     setRoleSelection([ ...roleSelection.filter(({ label, value }) => selectedRole.value !== value) ]);
@@ -49,7 +63,14 @@ const RoleCombo = () => {
 
   }
 
-  const onRoleRemove = () => {
+  const onRoleRemove = async () => {
+
+    const group = selectedDelRole.map(({ value }) => (value));
+
+    // remove user from backend first
+    const response = await removeGroup(selectedUser._id, group).unwrap();
+
+    if (!response) throw new Error(`Fail trying to remove group from user.`);
     
     // create temp arr
     const tempRoleArr = roles.filter(({ value }) => selectedDelRole['value'] !== value);
@@ -106,6 +127,10 @@ const RoleCombo = () => {
       </div>
     </>
   )
+}
+
+RoleCombo.propTypes = {
+  selectedUser: PropTypes.object
 }
 
 export default RoleCombo
