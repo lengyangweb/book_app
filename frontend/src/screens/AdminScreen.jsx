@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
-import { Col, Row } from 'react-bootstrap';
-import GridBox from '../components/shared/Grid/GridBox';
 import { toast } from 'react-toastify';
+import { Col, Row } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import GridBox from '../components/shared/Grid/GridBox';
 import { FaTrashAlt, FaTools, FaUserPlus } from 'react-icons/fa'
 import CreateUserModal from '../components/admin/CreateUserModal';
 
