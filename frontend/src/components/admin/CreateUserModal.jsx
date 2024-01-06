@@ -1,24 +1,18 @@
-import { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import { Form, Col, Row } from 'react-bootstrap';
-import { validatePassword } from '../../utils/passwordUtil';
-import { FaUserPlus } from 'react-icons/fa';
-import PropTypes from 'prop-types';
-import RoleCombo from './RoleCombo';
+import { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import { Form, Col, Row } from "react-bootstrap";
+import { validatePassword } from "../../utils/passwordUtil";
+import { FaUserPlus } from "react-icons/fa";
+import PropTypes from "prop-types";
+import RoleCombo from "./Role/Role";
 
-function CreateUserModal({ 
-  show, 
-  handleShow, 
-  handleClose,
-  selectedUser
-}) {
-
-  const [errMsg, setErrMsg] = useState('');
-  const [errPwd, setErrPwd] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function CreateUserModal({ show, handleShow, handleClose, selectedUser }) {
+  const [errMsg, setErrMsg] = useState("");
+  const [errPwd, setErrPwd] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const isUpdateUser = Object.keys(selectedUser).length ? true : false;
 
@@ -27,133 +21,138 @@ function CreateUserModal({
       setName(selectedUser.name);
       setEmail(selectedUser.email);
     }
-  }, [selectedUser])
+  }, [selectedUser]);
 
   /**
-   * Hanlde create or update user 
+   * Hanlde create or update user
    * @returns an error if any
    */
   const handleSubmit = () => {
-    if (errMsg) setErrMsg('');
+    if (errMsg) setErrMsg("");
 
     // check if all the fields are filled out
-    if (!name || !email) return setErrMsg('Make sure all fields are filled.');
+    if (!name || !email) return setErrMsg("Make sure all fields are filled.");
 
     const userObj = { name, email };
-    
+
     // if not updating a user
     if (!isUpdateUser) {
       const validPass = validatePassword(password); // validate password
       if (validPass) return setErrPwd(validPass); // if password error
-      userObj['password'] = password; // set password
+      userObj["password"] = password; // set password
     } else {
-      userObj['_id'] = selectedUser._id;
+      userObj["_id"] = selectedUser._id;
     }
 
     handleShow(userObj);
     resetForm();
-  }
+  };
 
   /**
    * on modal close
    */
   const onClose = () => {
     resetForm();
-    setErrMsg('');
-    setErrPwd('');
+    setErrMsg("");
+    setErrPwd("");
     handleClose();
-  }
+  };
 
   /**
    * Reset form values
    */
   const resetForm = () => {
-    setName('');
-    setEmail('');
-    setPassword('');
-  }
+    setName("");
+    setEmail("");
+    setPassword("");
+  };
 
   return (
     <>
-      <Modal 
-        show={show} 
-        onHide={onClose} 
-        size={ !isUpdateUser ? 'md' : 'lg' }
+      <Modal
+        show={show}
+        onHide={onClose}
+        size={!isUpdateUser ? "md" : "lg"}
         centered={true}
-        backdrop='static'
+        backdrop="static"
       >
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="d-flex align-items-center">
-              <span>{ isUpdateUser ? 'Update' : 'Create' } User</span>
-              <FaUserPlus className='mx-2' />
+              <span>{isUpdateUser ? "Update" : "Create"} User</span>
+              <FaUserPlus className="mx-2" />
             </div>
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className='pb-5'>
+        <Modal.Body className="pb-5">
           <Row>
-            <Col lg={ !isUpdateUser ? 12 : 6 }>
-              { errMsg && (<strong className='text-danger'><small>{ errMsg }</small></strong>) }
-              <div className="lead bg-dark text-light p-3">User Information</div>
+            <Col lg={!isUpdateUser ? 12 : 6}>
+              {errMsg && (
+                <strong className="text-danger">
+                  <small>{errMsg}</small>
+                </strong>
+              )}
+              <div className="lead bg-dark text-light p-3">
+                User Information
+              </div>
               <div className="d-flex flex-column border">
-                <form className='py-3 px-4'>
+                <form className="py-3 px-4">
                   <Form.Group>
                     <Form.Label>Name:</Form.Label>
-                    <Form.Control 
-                      type='text'
-                      value={ name }
-                      onChange={ (e) => setName(e.target.value) }
+                    <Form.Control
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </Form.Group>
-                  <Form.Group className='my-3'>
+                  <Form.Group className="my-3">
                     <Form.Label>Email:</Form.Label>
-                    <Form.Control 
-                      type='email'
-                      value={ email }
-                      onChange={ (e) => setEmail(e.target.value) }
+                    <Form.Control
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </Form.Group>
-                  { !isUpdateUser && 
+                  {!isUpdateUser && (
                     <Form.Group>
                       <Form.Label>Password:</Form.Label>
                       <Form.Control
-                        type='password'
-                        value={ password }
-                        onChange={ (e) => setPassword(e.target.value) }
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </Form.Group>
-                  }
-                  { ( !isUpdateUser && errPwd ) &&
-                    (<strong className='text-danger my-2'><small>{ errPwd }</small></strong>)
-                  }
+                  )}
+                  {!isUpdateUser && errPwd && (
+                    <strong className="text-danger my-2">
+                      <small>{errPwd}</small>
+                    </strong>
+                  )}
                   <div className="d-flex justify-content-center mt-4">
-                    <Button variant="primary" onClick={  handleSubmit}>
-                      { isUpdateUser ? 'Update' : 'Create' } User
+                    <Button variant="primary" onClick={handleSubmit}>
+                      {isUpdateUser ? "Update" : "Create"} User
                     </Button>
                   </div>
                 </form>
               </div>
             </Col>
-            {isUpdateUser && <Col lg={isUpdateUser ? 6 : 12}>
-                  <RoleCombo />
-              </Col>}
+            {isUpdateUser && (
+              <Col lg={isUpdateUser ? 6 : 12}>
+                <RoleCombo selectedUser={selectedUser} />
+              </Col>
+            )}
           </Row>
         </Modal.Body>
-        {/* <Modal.Footer>
-          <Button variant="secondary" onClick={onClose}>
-            Close
-          </Button>
-        </Modal.Footer> */}
       </Modal>
     </>
   );
 }
 
 CreateUserModal.propTypes = {
-  show: PropTypes.bool, 
-  handleShow: PropTypes.func, 
+  show: PropTypes.bool,
+  handleShow: PropTypes.func,
   handleClose: PropTypes.func,
-  selectedUser: PropTypes.object
-}
+  selectedUser: PropTypes.object,
+};
 
 export default CreateUserModal;
