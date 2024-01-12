@@ -18,7 +18,7 @@ const Role = ({ selectedUser }) => {
       <div className="lead bg-dark text-light p-3">Role</div>
       <div className="d-flex flex-column border py-3 px-4">
         <RoleCombo />
-        {/* <RoleComboGrid /> */}
+        <RoleComboGrid />
       </div>
     </RoleProvider>
   );

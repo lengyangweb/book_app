@@ -1,15 +1,17 @@
-import { Outlet } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Outlet } from "react-router-dom";
+import { PrimeReactProvider } from "primereact/api";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
     <>
-      <ToastContainer style={{ marginTop: '3rem' }} />
-      <Outlet />
+      <PrimeReactProvider>
+        <ToastContainer style={{ marginTop: "3rem" }} />
+        <Outlet />
+      </PrimeReactProvider>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
