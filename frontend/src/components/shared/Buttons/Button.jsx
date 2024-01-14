@@ -3,7 +3,7 @@ import Button from "../../styles/Button";
 
 const PrButton = ({ children, action }) => {
   return (
-    <Button type="button" onClick={action}>
+    <Button disabled type="button" onClick={action}>
       <div className="d-flex justify-content-center align-item-center">
         {children}
       </div>

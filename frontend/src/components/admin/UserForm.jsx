@@ -3,8 +3,8 @@ import PrButton from "../shared/Buttons/Button";
 import React, { useEffect, useState } from "react";
 
 const UserForm = ({ user }) => {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     setName(user.name ?? "");
@@ -21,7 +21,7 @@ const UserForm = ({ user }) => {
         User Form
       </Card.Header>
       <Card.Body className="px-4">
-        <Form>
+        <Form onSubmit={onSubmit}>
           <Form.Group>
             <Form.Label htmlFor="name">Name</Form.Label>
             <Form.Control
@@ -45,7 +45,7 @@ const UserForm = ({ user }) => {
           </Form.Group>
           <Form.Group>
             <div className="d-flex justify-content-center">
-              <PrButton action={onSubmit}>
+              <PrButton type="submit">
                 <span>{Object.keys(user).length ? "Update" : "Save"}</span>
               </PrButton>
             </div>

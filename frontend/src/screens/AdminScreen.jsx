@@ -17,6 +17,8 @@ import {
 } from "../slices/userApiSlice";
 import DataGrid from "../components/shared/DataGrid/DataGrid";
 import UserForm from "../components/admin/UserForm";
+import PrButton from "../components/shared/Buttons/Button";
+import UserButtons from "../components/admin/UserButtons";
 
 const AdminScreen = () => {
   // const userData = useLoaderData();
@@ -195,6 +197,9 @@ const AdminScreen = () => {
             minWidth="50rem"
             maxHeight="400px"
           />
+          {Object.keys(selectedUser).length > 0 && (
+            <UserButtons user={selectedUser} />
+          )}
         </Col>
       </Row>
     </div>
