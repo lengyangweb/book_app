@@ -183,50 +183,6 @@ const updateUserInfo = asyncHandler(async (req, res) => {
 
     user.save(); // save changes
 
-<<<<<<< HEAD
-    res.status(200).json({ message: 'Group has been added.' });
-
-});
-
-const removeGroup = asyncHandler(async (req, res) => {
-    
-    const { id } = req.params;
-
-    // check if current user is admin
-    const admin = isAdmin(req.user.group);
-
-    // if user not admin
-    if (!admin) {
-        res.status(401);
-        throw new Error('Insufficient access.');
-    }
-
-    try {
-        const result = await User.findOneAndUpdate(id, {
-            $pop: req.body.group
-        })
-
-        res.status(200).json({ success: true, message: 'Group has been added.' });
-
-    } catch (error) {
-        console.error(`Fail trying to remove user role`, error);
-    }
-
-})
-
-export {
-    getUsers,
-    registerUser,
-    authUser,
-    updateUserProfile,
-    getUserProfile,
-    logoutUser,
-    deleteUser,
-    addGroup,
-    removeGroup,
-    updateUserInfo
-}
-=======
     res.status(200).json({ success: true });
   } catch (error) {
     console.error(error);
@@ -243,4 +199,3 @@ export {
   deleteUser,
   updateUserInfo,
 };
->>>>>>> master

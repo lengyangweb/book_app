@@ -136,19 +136,11 @@ function CreateUserModal({ show, handleShow, handleClose, selectedUser }) {
                 </form>
               </div>
             </Col>
-<<<<<<< HEAD
-            {isUpdateUser && <Col lg={isUpdateUser ? 6 : 12}>
-                  <RoleCombo 
-                    selectedUser={ selectedUser }
-                  />
-              </Col>}
-=======
             {isUpdateUser && (
               <Col lg={isUpdateUser ? 6 : 12}>
                 <RoleCombo selectedUser={selectedUser} />
               </Col>
             )}
->>>>>>> master
           </Row>
         </Modal.Body>
       </Modal>
