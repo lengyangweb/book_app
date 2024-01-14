@@ -27,14 +27,22 @@ const Profile = ({ userInfo }) => {
   };
 
   return (
-    <>
-      <NavDropdown title={userInfo.name} id="username">
+    <div className="d-flex justify-content-center align-items-center">
+      <img
+        style={profileStyle}
+        src={userInfo.avatar ? userInfo.avatar : "./default-user.png"}
+        alt=""
+      />
+      <NavDropdown id="username" align={{ lg: "end" }}>
+        {/* <NavDropdown.Item>{userInfo.name}</NavDropdown.Item>
+        <NavDropdown.Divider /> */}
         <LinkContainer to="/profile">
           <NavDropdown.Item>Profile</NavDropdown.Item>
         </LinkContainer>
         <LinkContainer to="/change-password">
           <NavDropdown.Item>Change Password</NavDropdown.Item>
         </LinkContainer>
+        <NavDropdown.Divider />
         <NavDropdown.Item onClick={logoutUser}>
           <div className="d-flex align-items-center">
             <span>Logout</span>
@@ -42,8 +50,17 @@ const Profile = ({ userInfo }) => {
           </div>
         </NavDropdown.Item>
       </NavDropdown>
-    </>
+    </div>
   );
+};
+
+const profileStyle = {
+  border: "2px solid #333333",
+  width: "40px",
+  height: "40px",
+  borderRadius: "50%",
+  backgroundColor: "#ffffff",
+  // padding: "8px 18px",
 };
 
 export default Profile;
