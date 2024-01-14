@@ -24,7 +24,7 @@ const AdminScreen = () => {
   // const userData = useLoaderData();
 
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState();
+  const [selectedUser, setSelectedUser] = useState({});
   const [gridItems, setGridItems] = useState([]);
   const [initialGridItems, setInitialGridItem] = useState([]);
 
@@ -197,7 +197,7 @@ const AdminScreen = () => {
             minWidth="50rem"
             maxHeight="400px"
           />
-          {Object.keys(selectedUser).length > 0 && (
+          {(selectedUser && Object.keys(selectedUser).length) > 0 && (
             <UserButtons user={selectedUser} />
           )}
         </Col>
