@@ -10,7 +10,7 @@ import { generateGravatar } from "../utils/gravatarHelper.js";
 const getUsers = asyncHandler(async (req, res) => {
   try {
     // find all users
-    const users = await User.find();
+    const users = await User.find().select("-password");
 
     res.status(200).json(users);
   } catch (error) {
@@ -61,7 +61,17 @@ const registerUser = asyncHandler(async (req, res) => {
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  // find user and update user info
+  const user = await User.findOneAndUpdate(
+    { email },
+    {
+      isActive: true,
+      lastLoginDate: Date.now(),
+    },
+    {
+      new: true,
+    }
+  );
 
   if (user && (await user.matchPassword(password))) {
     // get all groups of user
@@ -91,6 +101,12 @@ const logoutUser = asyncHandler(async (req, res) => {
     expires: new Date(0),
   });
 
+  try {
+    await User.findOneAndUpdate({ _id: req.user.id }, { isActive: false });
+  } catch (error) {
+    console.error(`Updating user error`, error);
+  }
+
   res.status(200).json({ message: "User logged out" });
 });
 
@@ -100,7 +116,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 const getUserProfile = async (req, res) => {
   const { email } = req.body;
 
-  const userExist = await User.findOne({ email });
+  const userExist = await User.findOne({ email }).select("-password");
 
   if (!userExist) {
     res.status(401);

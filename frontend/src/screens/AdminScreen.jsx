@@ -1,9 +1,12 @@
 import { toast } from "react-toastify";
-import { Col, Row } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import GridBox from "../components/shared/Grid/GridBox";
 import { FaTrashAlt, FaTools, FaUserPlus } from "react-icons/fa";
 import CreateUserModal from "../components/admin/CreateUserModal";
+
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
 import {
   useUpdateUserInfoMutation,
@@ -12,12 +15,14 @@ import {
   useGetUsersQuery,
   useDeleteUserMutation,
 } from "../slices/userApiSlice";
+import DataGrid from "../components/shared/DataGrid/DataGrid";
+import UserForm from "../components/admin/UserForm";
 
 const AdminScreen = () => {
   // const userData = useLoaderData();
 
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState({});
+  const [selectedUser, setSelectedUser] = useState();
   const [gridItems, setGridItems] = useState([]);
   const [initialGridItems, setInitialGridItem] = useState([]);
 
@@ -38,6 +43,7 @@ const AdminScreen = () => {
   const tableHeaders = [
     { label: "Name", value: "name" },
     { label: "Email", value: "email" },
+    { label: "Active", value: "isActive" },
   ];
 
   useEffect(() => {
@@ -174,97 +180,115 @@ const AdminScreen = () => {
   }
 
   return (
-    <div className="p-4">
+    <div className="m-4">
       <Row>
-        <Col lg={12}>
-          <Row>
-            <Col lg={6}>
-              <Row>
-                <Col lg={12} className="mb-2">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <button
-                      className="btn btn-sm btn-success"
-                      onClick={() => setShow(true)}
-                      disabled={Object.keys(selectedUser).length}
-                    >
-                      <div className="d-flex flex-column align-items-center justify-content-center px-3">
-                        <FaUserPlus />
-                        <small>Create</small>
-                      </div>
-                    </button>
-                    <button
-                      className="btn btn-sm btn-warning mx-2"
-                      disabled={!Object.keys(selectedUser).length}
-                      onClick={onShowUpdate}
-                    >
-                      <div className="d-flex flex-column align-items-center justify-content-center px-3">
-                        {!updateLoading ? (
-                          <>
-                            <FaTools />
-                            <small>Update</small>
-                          </>
-                        ) : (
-                          <>
-                            <span
-                              className="spinner-border spinner-border-sm"
-                              aria-hidden="true"
-                            ></span>
-                            <span className="role">Updating</span>
-                          </>
-                        )}
-                      </div>
-                    </button>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      disabled={!Object.keys(selectedUser).length}
-                      onClick={onUserDelete}
-                    >
-                      <div className="d-flex flex-column align-items-center justify-content-center px-3 mx-1">
-                        {!deleteLoading ? (
-                          <>
-                            <FaTrashAlt />
-                            <small>Delete</small>
-                          </>
-                        ) : (
-                          <>
-                            <span
-                              className="spinner-border spinner-border-sm"
-                              aria-hidden="true"
-                            ></span>
-                            <span className="role">Deleting</span>
-                          </>
-                        )}
-                      </div>
-                    </button>
-                  </div>
-                </Col>
-                <Col lg={12}></Col>
-              </Row>
-              <GridBox
-                headers={tableHeaders}
-                items={gridItems}
-                initialItems={initialGridItems}
-                setItem={setUsers}
-                selectedItem={selectedUser}
-                setSelectedItem={setSelectedUser}
-                formSubmit={formSubmit}
-              />
-            </Col>
-            <Col lg={6}>
-              <h1>Hello World</h1>
-            </Col>
-          </Row>
+        <Col lg={4}>
+          <UserForm user={selectedUser} />
         </Col>
-        <Col lg={12}>
-          <CreateUserModal
-            show={show}
-            handleShow={handleShow}
-            handleClose={handleClose}
-            selectedUser={selectedUser}
+        <Col lg={8}>
+          <DataGrid
+            data={usersData}
+            columns={tableHeaders}
+            selectionMode="single"
+            selection={selectedUser}
+            setSelection={setSelectedUser}
+            minWidth="50rem"
+            maxHeight="400px"
           />
         </Col>
       </Row>
     </div>
+    // <div className="p-4">
+    //   <Row>
+    //     <Col lg={12}>
+    //       <Row>
+    //         <Col lg={6}>
+    //           <Row>
+    //             <Col lg={12} className="mb-2">
+    //               <div className="d-flex justify-content-end align-items-center">
+    //                 <button
+    //                   className="btn btn-sm btn-success"
+    //                   onClick={() => setShow(true)}
+    //                   disabled={Object.keys(selectedUser).length}
+    //                 >
+    //                   <div className="d-flex flex-column align-items-center justify-content-center px-3">
+    //                     <FaUserPlus />
+    //                     <small>Create</small>
+    //                   </div>
+    //                 </button>
+    //                 <button
+    //                   className="btn btn-sm btn-warning mx-2"
+    //                   disabled={!Object.keys(selectedUser).length}
+    //                   onClick={onShowUpdate}
+    //                 >
+    //                   <div className="d-flex flex-column align-items-center justify-content-center px-3">
+    //                     {!updateLoading ? (
+    //                       <>
+    //                         <FaTools />
+    //                         <small>Update</small>
+    //                       </>
+    //                     ) : (
+    //                       <>
+    //                         <span
+    //                           className="spinner-border spinner-border-sm"
+    //                           aria-hidden="true"
+    //                         ></span>
+    //                         <span className="role">Updating</span>
+    //                       </>
+    //                     )}
+    //                   </div>
+    //                 </button>
+    //                 <button
+    //                   className="btn btn-sm btn-danger"
+    //                   disabled={!Object.keys(selectedUser).length}
+    //                   onClick={onUserDelete}
+    //                 >
+    //                   <div className="d-flex flex-column align-items-center justify-content-center px-3 mx-1">
+    //                     {!deleteLoading ? (
+    //                       <>
+    //                         <FaTrashAlt />
+    //                         <small>Delete</small>
+    //                       </>
+    //                     ) : (
+    //                       <>
+    //                         <span
+    //                           className="spinner-border spinner-border-sm"
+    //                           aria-hidden="true"
+    //                         ></span>
+    //                         <span className="role">Deleting</span>
+    //                       </>
+    //                     )}
+    //                   </div>
+    //                 </button>
+    //               </div>
+    //             </Col>
+    //             <Col lg={12}></Col>
+    //           </Row>
+    //           <GridBox
+    //             headers={tableHeaders}
+    //             items={gridItems}
+    //             initialItems={initialGridItems}
+    //             setItem={setUsers}
+    //             selectedItem={selectedUser}
+    //             setSelectedItem={setSelectedUser}
+    //             formSubmit={formSubmit}
+    //           />
+    //         </Col>
+    //         <Col lg={6}>
+    //           <h1>Hello World</h1>
+    //         </Col>
+    //       </Row>
+    //     </Col>
+    //     <Col lg={12}>
+    //       <CreateUserModal
+    //         show={show}
+    //         handleShow={handleShow}
+    //         handleClose={handleClose}
+    //         selectedUser={selectedUser}
+    //       />
+    //     </Col>
+    //   </Row>
+    // </div>
   );
 };
 

@@ -18,9 +18,9 @@ const userSchema = new mongoose.Schema(
       require: true,
       required: true,
     },
-    avatar: {
-      type: String,
-    },
+    avatar: { type: String },
+    lastLoginDate: { type: Date },
+    isActive: { type: Boolean },
   },
   {
     timestamps: true,
