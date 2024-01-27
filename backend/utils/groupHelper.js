@@ -13,7 +13,7 @@ const GROUP = {
  */
 const getAllGroups = () => {
   const groups = [...GROUP.ADMIN, ...GROUP.USER, ...GROUP.ROLES].map(
-    (group) => ({ label: group, value: group })
+    (group) => ({ name: group, code: group })
   );
   return groups;
 };

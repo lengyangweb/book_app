@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
+import userService from "../services/userServices.js";
 import { getMyGroups, isAdmin } from "../utils/groupHelper.js";
 import { generateGravatar } from "../utils/gravatarHelper.js";
 
@@ -9,12 +10,13 @@ import { generateGravatar } from "../utils/gravatarHelper.js";
 // @access  private
 const getUsers = asyncHandler(async (req, res) => {
   try {
-    // find all users
-    const users = await User.find().select("-password");
+    // get all users
+    const users = await userService.getUsers();
 
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

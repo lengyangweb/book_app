@@ -21,12 +21,17 @@ const getUserGroups = async (req, res) => {
   const { id } = req.params;
   // if id isn't provide
   if (!id) return res.status(400).json({ message: "Missing resource." });
-  // get all user groups
-  const groups = await getMyGroups(id);
-  // if no groups
-  if (!groups) return res.status(400).json([]);
-  // return all groups of user
-  res.status(200).json(groups);
+  try {
+    // get all user groups
+    const groups = await getMyGroups(id);
+    // if no groups
+    if (!groups) return res.status(400).json([]);
+    // return all groups of user
+    res.status(200).json(groups);
+  } catch (error) {
+    console.error("Fail getting user groups", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 export { getGroups, getUserGroups };

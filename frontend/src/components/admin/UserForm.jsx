@@ -1,18 +1,39 @@
+import { useForm } from "react-hook-form";
 import { Card, Form } from "react-bootstrap";
-import PrButton from "../shared/Buttons/Button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  useRegisterUserMutation,
+  useUpdateUserInfoMutation,
+} from "../../slices/userApiSlice";
+import { InputText } from "primereact/inputtext";
 
 const UserForm = ({ user }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
-    setName(user.name ?? "");
-    setEmail(user.email ?? "");
+    const { name, email } = user;
+    reset({ name, email });
   }, [user]);
 
-  function onSubmit() {
-    console.log({ name, email });
+  const [registerUser] = useRegisterUserMutation();
+  const [updateUser] = useUpdateUserInfoMutation();
+
+  function onSubmit(data) {
+    // run method
+    user ? handleUpdate(data) : handleRegister(data);
+  }
+
+  function handleRegister(data) {
+    console.log(`Registering user...`);
+  }
+
+  function handleUpdate(data) {
+    console.log(`Updating user...`);
   }
 
   return (
@@ -21,16 +42,18 @@ const UserForm = ({ user }) => {
         User Form
       </Card.Header>
       <Card.Body className="px-4">
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Group>
             <Form.Label htmlFor="name">Name</Form.Label>
             <Form.Control
               id="name"
               name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
               autoComplete="name"
+              {...register("name", { required: `Required` })}
             />
+            {errors.name && (
+              <span className="text-danger">{errors.name?.message}</span>
+            )}
           </Form.Group>
           <Form.Group className="my-3">
             <Form.Label htmlFor="email">Email</Form.Label>
@@ -38,16 +61,18 @@ const UserForm = ({ user }) => {
               type="email"
               id="email"
               name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
+              {...register("email", { required: "Required" })}
             />
+            {errors.email && (
+              <span className="text-danger">{errors.email?.message}</span>
+            )}
           </Form.Group>
           <Form.Group>
             <div className="d-flex justify-content-center">
-              <PrButton type="submit">
+              <button className="btn btn-outline-primary w-25" type="submit">
                 <span>{Object.keys(user).length ? "Update" : "Save"}</span>
-              </PrButton>
+              </button>
             </div>
           </Form.Group>
         </Form>

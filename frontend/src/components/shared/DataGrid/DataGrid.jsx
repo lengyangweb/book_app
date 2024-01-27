@@ -26,7 +26,13 @@ const DataGrid = ({
           tableStyle={{ minWidth: minWidth }}
         >
           {columns.map(({ label, value }) => (
-            <Column key={value} field={value} sortable header={label} />
+            <Column
+              className="border border-start-0 border-end-0"
+              key={value}
+              field={value}
+              sortable
+              header={label}
+            />
           ))}
         </DataTable>
       </Card>

@@ -10,7 +10,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getUserGroup: builder.query({
+      query: (id) => ({
+        url: `${USERS_URL}/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetGroupsQuery } = userApiSlice;
+export const { useGetGroupsQuery, useGetUserGroupQuery } = userApiSlice;

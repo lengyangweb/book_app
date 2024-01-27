@@ -27,7 +27,7 @@ const Profile = ({ userInfo }) => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center">
+    <div className="d-flex flex-column flex-lg-row justify-content-center align-items-center">
       <img
         style={profileStyle}
         src={userInfo.avatar ? userInfo.avatar : "./default-user.png"}
@@ -55,7 +55,7 @@ const Profile = ({ userInfo }) => {
 };
 
 const profileStyle = {
-  border: "2px solid #333333",
+  border: "2px solid #eeeeee",
   width: "40px",
   height: "40px",
   borderRadius: "50%",
